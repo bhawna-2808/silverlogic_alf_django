@@ -1,0 +1,3 @@
+{% autoescape off %}
+Reminder from ALF Trainings: Hi {{first_name}}, your in person training event, {{task_type_name}}, starts at {{start_time}}.
+{% endautoescape %}

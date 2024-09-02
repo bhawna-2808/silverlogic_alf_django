@@ -1,0 +1,3 @@
+{% autoescape off %}
+Reminder from ALF Trainings: Hi {{first_name}}, {{task_type_name}} is past due on {{date}}
+{% endautoescape %}

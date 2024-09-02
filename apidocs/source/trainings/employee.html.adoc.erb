@@ -1,0 +1,92 @@
+---
+title: Employee
+---
+
+= Employee
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`username` | `string` |
+|`phone_number` | `string` |
+|`first_name` | `string` |
+|`last_name` | `string` |
+|`email` | `string` |
+|`ssn` | `string` |
+|`date_of_birth` | `date` |
+|`date_of_hire` | `date` |
+|`address` | `string` |
+|`address2` | `string` |
+|`city` | `string` |
+|`state` | `string` |
+|`zip_field` | `string` |
+|`invite_code` | `string` |
+|`receives_emails` | `string` |
+|`user` | `string` | User pk *Expandable*.
+|`facility` | `int` | Facility pk *Expandable*.
+|`positions` | `list` | FacilityPosition list *Expandable*.
+|===
+
+
+== List
+
+[source]
+----
+GET /employees
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`not_linked` | `boolean` | Returns linked or not linked employees with users.
+|===
+
+== Current User Employee Record
+
+Retrieve Current User Employee Record.
+
+[source]
+----
+GET /employees/me/
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`expand` | `string` | List of fields to expand.  Possible values: `facility | facility.questions`, `positions`, `user`.
+|===
+
+
+=== Response
+
+++++
+<%= json :employee_detail %>
+++++
+
+== Invite Employees
+
+Send invite to list of employees
+
+[source]
+----
+POST /employees/invite/
+----
+
+=== Response
+
+++++
+<%= json :invite_resp %>
+++++
+
+// vim: set ft=asciidoc:

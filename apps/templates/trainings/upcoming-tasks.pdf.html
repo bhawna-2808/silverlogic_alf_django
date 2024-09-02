@@ -1,0 +1,72 @@
+{% load tasks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upcoming Due {{ type }}s</title>
+
+    <style>
+        @page {
+            size: letter portrait;
+            @frame content_frame {          /* Content Frame */
+                left: 30pt; width: 552pt; top: 20pt; height: 735pt;
+            }
+            @frame footer_frame {           /* Static Footer Frame */
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 552pt; top: 745pt; height: 40pt;
+            }
+        }
+        h1 {
+            font-size: 14pt;
+            text-align: center;
+        }
+        body {
+            font-size: 9pt;
+        }
+        th {
+            font-weight: bold;
+        }
+        table {
+            padding: 5px;
+        }
+        .footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content" class="footer">
+    <div class="pagenum">
+        <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+    Created with ALF Boss
+</div>
+
+<!-- HTML Content -->
+<h1>Upcoming Due {{ type }}s</h1>
+<table>
+    <tr>
+        <th width="15%" style="text-align: left">First Name</th>
+        <th width="15%" style="text-align: left">Last Name</th>
+        <th width="15%" style="text-align: left">{{ type }}</th>
+        <th width="15%" style="text-align: left">Due Date</th>
+        <th width="30%" style="text-align: left">Date Scheduled to Attend {{ type }}</th>
+        <th width="10%" style="text-align: left">Status</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td style="vertical-align: top">{{ task.employee.first_name }}</td>
+        <td style="vertical-align: top">{{ task.employee.last_name }}</td>
+        <td style="vertical-align: top">{{ task.type.name }}</td>
+        <td style="vertical-align: top">{{ task.due_date|date:"SHORT_DATE_FORMAT" }} </td>
+        <td style="vertical-align: top">{{ task.scheduled_event.start_time|date:"SHORT_DATE_FORMAT"|default:'None' }}</td>
+        <td style="vertical-align: top">{{ task|task_status_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

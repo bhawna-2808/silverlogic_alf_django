@@ -1,0 +1,202 @@
+---
+title: Residents
+---
+
+= Residents
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` |
+|`first_name` | `string` |
+|`last_name` | `string` |
+|`avatar` | `string` |
+|`date_of_birth` | `string` |
+|`age` | `int` |
+|`sex` | `string` |
+|`marital_status` | `string` |
+|`is_active` | `bool` |
+|`room_number` | `string` |
+|`bed` | `string` |
+|`race` | `string` |
+|`religion` | `string` |
+|`ssn` | `string` |
+|`date_of_admission` | `string` |
+|`admitted_from` | `string` |
+|`date_of_discharge` | `string` |
+|`discharged_to` | `string` |
+|`discharge_reason` | `string` | Reason for discharge
+|`discharge_notes` | `string` | Notes for discharge (old reason_for_discharge)
+|`personal_notes` | `string` |
+|`contact_1_name` | `string` |
+|`contact_1_relationship` | `string` |
+|`contact_1_home_phone` | `string` |
+|`contact_1_mobile_phone` | `string` |
+|`contact_1_email` | `string` |
+|`contact_1_address` | `string` |
+|`contact_2_name` | `string` |
+|`contact_2_relationship` | `string` |
+|`contact_2_home_phone` | `string` |
+|`contact_2_mobile_phone` | `string` |
+|`contact_2_email` | `string` |
+|`contact_2_address` | `string` |
+|`primary_insurance` | `string` |
+|`primary_insurance_number` | `string` |
+|`medicaid_number` | `string` |
+|`mma_plan` | `string` |
+|`mma_number` | `string` |
+|`drug_plan_name` | `string` |
+|`drug_plan_number` | `string` |
+|`case_worker_first_name` | `string` |
+|`case_worker_last_name` | `string` |
+|`case_worker_phone` | `string` |
+|`has_completed_1823_on_file` | `bool` |
+|`form_1823_completed_date` | `string` |
+|`dnr_on_file` | `string` |
+|`diagnosis` | `string` |
+|`allergies` | `string` |
+|`long_term_care_provider` | `string` |
+|`long_term_care_provider_other` | `string` |
+|`long_term_care_number` | `string` |
+|`primary_doctor_name` | `string` |
+|`primary_doctor_phone` | `string` |
+|`permanent_placement` | `bool` |
+|`primary_doctor_address` | `string` |
+|`primary_doctor_email` | `string` |
+|`psychiatric_doctor_name` | `string` |
+|`psychiatric_doctor_phone` | `string` |
+|`psychiatric_doctor_address` | `string` |
+|`psychiatric_doctor_email` | `string` |
+|`medical_notes` | `string` |
+|`dialysis_center` | `string` |
+|`dialysis_center_phone` | `string` |
+|`hospice_provider` | `string` |
+|`hospice_provider_phone` | `string` |
+|`has_signed_contract_on_file` | `bool` |
+|`contract_amount` | `string` |
+|`has_durable_power_of_attorney_on_file` | `bool` |
+|`has_long_term_care_program` | `bool` |
+|`has_assistive_care_services` | `bool` |
+|`has_oss` | `bool` |
+|`financial_notes` | `string` |
+|`height` | `string` |
+|`weight` | `string` |
+|`physical_or_sensory_limitations` | `string` |
+|`cognitive_or_behavioral_status` | `string` |
+|`nursing_treatment_therapy_service_requirements` | `string` |
+|`special_precautions` | `string` |
+|`is_elopement_risk` | `bool` |
+|`ambulation_status` | `string` |
+|`bathing_status` | `string` |
+|`dressing_status` | `string` |
+|`eating_status` | `string` |
+|`self_care_status` | `string` |
+|`toileting_status` | `string` |
+|`transferring_status` | `string` |
+|`is_diet_regular` | `bool` |
+|`is_diet_calorie_controlled` | `bool` |
+|`is_diet_no_added_salt` | `bool` |
+|`is_diet_low_fat_or_low_cholesterol` | `bool` |
+|`is_diet_low_sugar` | `bool` |
+|`is_diet_other` | `bool` |
+|`diet_other_comments` | `string` |
+|`has_communicable_disease` | `bool` |
+|`has_communicable_disease_comments` | `string` |
+|`is_bedridden` | `bool` |
+|`is_bedridden_comments` | `string` |
+|`has_pressure_sores` | `bool` |
+|`has_pressure_sores_comments` | `string` |
+|`does_pose_danger` | `bool` |
+|`does_pose_danger_comments` | `string` |
+|`requires_nursing_or_psychiatric_care` | `bool` |
+|`requires_nursing_or_psychiatric_care_comments` | `string` |
+|`can_needs_be_met` | `bool` |
+|`can_needs_be_met_comments` | `string` |
+|`preparing_meals_status` | `bool` |
+|`shopping_status` | `bool` |
+|`making_phone_call_status` | `bool` |
+|`handling_personal_affairs_status` | `bool` |
+|`handling_financial_affairs_status` | `bool` |
+|`section_2_a_other_name` | `string` |
+|`section_2_a_other_status` | `string` |
+|`section_2_a_other_comments` | `string` |
+|`observing_wellbeing_status` | `string` |
+|`observing_wellbeing_comments` | `string` |
+|`observing_whereabouts_status` | `string` |
+|`observing_whereabouts_comments` | `string` |
+|`reminders_for_important_tasks_status` | `string` |
+|`reminders_for_important_tasks_comments` | `string` |
+|`section_2_b_other1_name` | `string` |
+|`section_2_b_other1_status` | `string` |
+|`section_2_b_other1_comments` | `string` |
+|`section_2_b_other2_name` | `string` |
+|`section_2_b_other2_status` | `string` |
+|`section_2_b_other2_comments` | `string` |
+|`section_2_b_other3_name` | `string` |
+|`section_2_b_other3_status` | `string` |
+|`section_2_b_other3_comments` | `string` |
+|`section_2_b_other4_name` | `string` |
+|`section_2_b_other4_status` | `string` |
+|`section_2_b_other4_comments` | `string` |
+|`additional_comments_or_observations` | `string` |
+|`medications` | `string` |
+|`requires_help_taking_medication` | `bool` |
+|`is_dialysis_patient` | `bool` |
+|`is_under_hospice_care` | `bool` |
+|`requires_help_with_self_administered_medication` | `bool` |
+|`requires_medication_administration` | `bool` |
+|`is_able_to_administer_without_assistance` | `bool` |
+|`section_2_b_additional_comments` | `bool` |
+|`signature_on_file` | `bool` |
+|`examiner_name` | `string` |
+|`examiner_signature` | `string` |
+|`examiner_medical_license_number` | `string` |
+|`examiner_address` | `string` |
+|`examiner_phone` | `string` |
+|`examiner_title` | `string` |
+|`examination_date` | `string` |
+|`services_offered` | `string` |
+|`gaurdian_or_recipient_name` | `string` |
+|`gaurdian_or_recipient_signature` | `string` |
+|`administrator_or_designee_name` | `string` |
+|`administrator_or_designee_signature` | `string` |
+|`examination_due_date` | `string` |
+|`examination_interval` | `int` |
+|`examination_requested` | `bool` |
+|`primary_is_examiner` | `bool` |
+|`primary_is_examiner_invited` | `bool` |
+|`has_examiners_assigned` | `bool` |
+|===
+
+=== Example
+
+++++
+<%= json :resident %>
+++++
+
+== Retrieve
+
+----
+GET /residents/:id/
+----
+
+== List PDF
+
+[source]
+----
+GET /residents.pdf/
+----
+=== Query parameter
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`title` | `string` | The title which will be displayed on the PDF.
+|`resident_ids` | `list` | **Required** A comma separated list of resident IDs.
+|`api_key` | `string` | **Required** The token of the authenticated user
+|`columns` | `list` | A comma separated list of column names. Defaults to `first_name`,`last_name`,`examination_due_date`,`room_number`,`bed`.
+|===
+
+// vim: set ft=asciidoc:

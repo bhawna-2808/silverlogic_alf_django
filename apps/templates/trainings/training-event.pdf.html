@@ -1,0 +1,30 @@
+{% load tz %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.training_for.name }} Event</title>
+</head>
+<body>
+<h1>{{ object.training_for.name }} Event</h1>
+<h2>Location: {{ object.location }}</h2>
+<h2>Date: {{ object.start_time|date:'SHORT_DATE_FORMAT' }}</h2>
+<h2>Start Time: {{ object.start_time |timezone:"America/New_York" |date:'P' }} (EST)</h2>
+<h2>End Time: {{ object.end_time |timezone:"America/New_York" |date:'P' }} (EST)</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Employee Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for employee in object.attendees.all %}
+    <tr>
+        <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,5 @@
+Welcome to ALFBoss!  Use the following credentials to login:
+
+{{ FRONT_URL }}/signin
+
+username: {{ username }}

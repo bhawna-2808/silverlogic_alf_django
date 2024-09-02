@@ -1,0 +1,182 @@
+{% load tasks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ employee }}</title>
+
+    <style>
+        @page {
+            size: letter portrait;
+            @frame content_frame {          /* Content Frame */
+                left: 30pt; width: 552pt; top: 20pt; height: 735pt;
+            }
+            @frame footer_frame {           /* Static Footer Frame */
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 552pt; top: 745pt; height: 40pt;
+            }
+        }
+        h1 {
+            font-size: 14pt;
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+        }
+        body {
+            font-size: 11pt;
+        }
+        th {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content" class="footer">
+    <div class="pagenum">
+        <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+    Created with ALF Boss
+</div>
+
+<!-- HTML Content -->
+<h1>{{ employee }}</h1>
+<table>
+    <tr>
+        <td width="25%">Phone:</td>
+        <td width="40%">{{ employee.phone_number }}</td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td>{{ employee.email }}</td>
+    </tr>
+    <tr>
+        <td>Social Security:</td>
+        <td>{{ employee.ssn }}</td>
+    </tr>
+    <tr>
+        <td>Date of Birth:</td>
+        <td>{{ employee.date_of_birth|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
+    <tr>
+        <td>Positions:</td>
+        <td>{{ employee.positions.all|join:', ' }}</td>
+    </tr>
+    <tr>
+        <td>Date of Hire:</td>
+        <td>{{ employee.date_of_hire|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
+    <tr>
+        <td>Address:</td>
+        <td>{{ employee.address }}</td>
+    </tr>
+    <tr>
+        <td>Address2:</td>
+        <td>{{ employee.address2 }}</td>
+    </tr>
+    <tr>
+        <td>City:</td>
+        <td>{{ employee.city }}</td>
+    </tr>
+    <tr>
+        <td>State / Zip:</td>
+        <td>{{ employee.state }} {{ employee.zip_field }}</td>
+    </tr>
+</table>
+
+<h2>Totals</h2>
+<table>
+    <tr>
+        <td width="25%">Completed Tasks:</td>
+        <td width="25%">{{ completed_tasks|length }}</td>
+    </tr>
+    <tr>
+        <td>Outstanding Tasks:</td>
+        <td>{{ outstanding_tasks|length }}</td>
+    </tr>
+    <tr>
+        <td>Completed Trainings:</td>
+        <td>{{ completed_trainings|length }}</td>
+    </tr>
+    <tr>
+        <td>Outstanding Trainings:</td>
+        <td>{{ outstanding_trainings|length }}</td>
+    </tr>
+</table>
+
+<h2>Outstanding Trainings</h2>
+<table>
+    <tr>
+        <th style="text-align: left">Task</th>
+        <th style="text-align: left">Due</th>
+        <th style="text-align: left">Schedule</th>
+        <th style="text-align: left">Status</th>
+    </tr>
+    {% for training in outstanding_trainings %}
+    <tr>
+        <td>{{ training.type.name }}</td>
+        <td>{{ training.due_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{% if training.scheduled_event %}{{ training.scheduled_event.start_time.date|date:"SHORT_DATE_FORMAT" }}{% else %}not scheduled{% endif %}</td>
+        <td>{{ training|task_status_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Outstanding Tasks</h2>
+<table>
+    <tr>
+        <th style="text-align: left">Task</th>
+        <th style="text-align: left">Due</th>
+        <th style="text-align: left">Schedule</th>
+        <th style="text-align: left">Status</th>
+    </tr>
+    {% for task in outstanding_tasks %}
+    <tr>
+        <td>{{ task.type.name }}</td>
+        <td>{{ task.due_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{% if task.scheduled_event %}{{ task.scheduled_event.start_time.date|date:"SHORT_DATE_FORMAT" }}{% else %}not scheduled{% endif %}</td>
+        <td>{{ task|task_status_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Completed Trainings</h2>
+<table>
+    <tr>
+        <th style="text-align: left">Task</th>
+        <th style="text-align: left">Completion Date</th>
+        <th style="text-align: left">Next Due Date</th>
+    </tr>
+    {% for training in completed_trainings %}
+    <tr>
+        <td>{{ training.type.name }}</td>
+        <td>{{ training.completion_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{% if not training.type.is_one_off %}{{ training.expiration_date|date:"SHORT_DATE_FORMAT" }}{% else %}N/A{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Completed Tasks</h2>
+<table>
+    <tr>
+        <th style="text-align: left">Task</th>
+        <th style="text-align: left">Completion Date</th>
+        <th style="text-align: left">Next Due Date</th>
+    </tr>
+    {% for task in completed_tasks %}
+    <tr>
+        <td>{{ task.type.name }}</td>
+        <td>{{ task.completion_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{% if not task.type.is_one_off %}{{ task.expiration_date|date:"SHORT_DATE_FORMAT" }}{% else %}N/A{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

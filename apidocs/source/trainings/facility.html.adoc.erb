@@ -1,0 +1,56 @@
+---
+title: Facility
+---
+
+= Facility
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`address_city` | `string` |
+|`address_line1` | `string` |
+|`address_line2` | `string` |
+|`address_zipcode` | `string` |
+|`alzheimer` | `boolean` |
+|`bought_ebook` | `boolean` |
+|`businessagreement` | `object` |
+|`can_use_subscription_trial` | `boolean` |
+|`capacity` | `integer` |
+|`contact_email` | `string` |
+|`contact_fax` | `string` |
+|`contact_phone` | `string` |
+|`default` | `object` |
+|`directory_facility` | `integer` |
+|`first_aid_cpr` | `boolean` |
+|`has_active_subscription` | `boolean` |
+|`has_active_trainings_subscription` | `boolean` |
+|`is_resident_module_enabled` | `boolean` |
+|`is_staff_module_enabled` | `boolean` |
+|`name` | `string` |
+|`primary_administrator_name` | `string` |
+|`questions` | `list` |
+|`state` | `string` |
+|`is_lms_module_enabled` | `boolean` | If the facility has LMS access
+|`npi` | `string` |
+|`admin_signature` | `string` | base64 image
+|===
+
+== Update Facility
+
+[source]
+----
+PUT /facilities/:id/
+----
+
+=== Response
+
+++++
+<%= json :facility %>
+++++
+
+// vim: set ft=asciidoc:

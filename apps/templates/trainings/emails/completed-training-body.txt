@@ -1,0 +1,8 @@
+{% autoescape off %}
+Hello,
+
+{{employee_name}} completed {{training_name}} on ALF Boss Trainings. Please find the attached certificate for your records. 
+
+Thank you, 
+ALF Boss
+{% endautoescape %}

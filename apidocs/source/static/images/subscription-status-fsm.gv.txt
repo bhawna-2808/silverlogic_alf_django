@@ -1,0 +1,11 @@
+digraph subscription_status {
+    rankdir=LR;
+    node [shape = rectangle];
+    Trialing -> Active [ label = "Added payment info" ];
+    Trialing -> Canceled [ label = "Canceled by user" ];
+    Active -> "Past Due" [ label = "Payment attempt failed" ];
+    Active -> "Pending Cancel" [ label = "Canceled by user" ];
+    "Past Due" -> Canceled [ label = "Payment failed too many times" ];
+    "Past Due" -> Active [ label = "Payment succeeded / new payment info provided" ];
+    "Pending Cancel" -> Canceled [ label = "Reached end of billing cycle" ];
+}

@@ -1,0 +1,46 @@
+---
+title: Task Types
+---
+
+= TaskType
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`name` | `string` | 
+|`is_training` | `boolean` | 
+|`is_one_off` | `boolean` | 
+|`hide_in_lms` | `boolean` |
+|`required_within` | `time` |
+|`required_after_task_type` | `integer` | pk TaskType
+|`validity_period` | `time` |
+|`required_for` | `list` | list of Responsibility
+|`facility` | `integer` | pk Facility
+|`prerequisites` | `list` | list of TaskType
+|`supersedes` | `list` | list of TaskType
+|`rule` | `string` | 
+|`image` | `object` | object with image sizes
+|`external_training_url` | `string` | required external training url
+|===
+
+== List TaskTypes
+
+list task types.
+
+[source]
+----
+GET /task_types/
+----
+
+=== Response
+
+++++
+<%= json :task_type %>
+++++
+
+// vim: set ft=asciidoc:

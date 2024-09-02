@@ -1,0 +1,37 @@
+---
+title: Position CloudCare
+---
+
+= Position 
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` | Position ID
+|`name` | `string` | Name of the Position.
+
+
+|===
+
+++++
+<%= json :position_cloudcare_response %>
+++++
+
+== List
+
+[source]
+----
+GET /cloudcare/positions/
+----
+
+=== List Example
+
+----
+curl --location --request GET 'https://api.staging.alfboss.com/api/cloudcare/positions/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL'
+----
+
+
+// vim: set ft=asciidoc:

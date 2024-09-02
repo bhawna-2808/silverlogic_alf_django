@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    <style>
+        @page {
+            size: letter portrait;
+            @frame content_frame {          /* Content Frame */
+                left: 30pt; width: 552pt; top: 20pt; height: 735pt;
+            }
+            @frame footer_frame {           /* Static Footer Frame */
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 552pt; top: 745pt; height: 40pt;
+            }
+        }
+
+        h1 {
+            font-size: 14pt;
+        }
+
+        body {
+            font-size: 11pt;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content" class="footer">
+    <div class="pagenum">
+        <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+    {% now "m/d/Y" %} - Created with ALF Boss
+</div>
+
+<!-- HTML Content -->
+<h1>{{ title }}</h1>
+<table>
+    <tr>
+        {% for column in pdf_builder.columns %}
+            <th style="text-align: left">{{ column.name }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in pdf_builder.rows %}
+        <tr>
+            {% for column in row.columns %}
+                <td>{{ column.value }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

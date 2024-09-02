@@ -1,0 +1,22 @@
+Hi,
+
+{{ user.username}} has opted-in their facility {{ facility.name }} to the sponsored Trainings subscription.
+
+In order to enable ALF Boss trainings, you will need to:
+
+1. From the link below,  go to the Opted In Facilities list and click on the Sponsor you wish to add the Facility to
+
+2. From the  Sponsor page, search for the Facility you wish to add under Sponsorships, select the Facility and add a Start Date (End Date is optional)
+
+{% if subscription_created %} 
+    Trainings subscription created. 
+{% else %} 
+    Trainings subscription couldn't be created. Facility should have an active subscription. 
+{% endif %} 
+
+You can see a list of opted-in facilities in the following link:
+
+{{url}}
+
+Thanks,
+ALF Boss

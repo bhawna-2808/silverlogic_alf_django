@@ -1,0 +1,10 @@
+{% autoescape off %}Your facility is compliant
+
+Your facility is ACHA compliant!
+
+In order to stay ACHA compliant, the following must be completed within 90 days:
+{% for task_type in task_types %}{% if task_type.task_set.count %}
+{{ task_type }}
+{% for task in task_type.task_set.all %}
+    {{ task.employee }}: {{ site }}/employees/{{ task.employee.pk }}
+{% endfor %}{% endif %}{% endfor %}{% endautoescape %}

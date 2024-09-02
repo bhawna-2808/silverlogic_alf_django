@@ -1,0 +1,52 @@
+---
+title: CloudCare Auth
+---
+
+= CloudCare Auth
+
+Authenticate user 
+
+[source]
+----
+POST /login/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`username` | `string` | chosen username
+|`password` | `string` | chosen password
+|`client_id` | `string` | the id of the client being used
+|===
+
+
+=== Response
+
+++++
+<%= json :auth_token %>
+++++
+
+== Token Usage Example
+
+----
+curl --location --request POST 'https://api.staging.alfboss.com/api/cloudcare/residents/' \
+--header 'Authorization: Token lkja8*lkajsd*lkjas;ldkj8asd;kJASd811' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "first_name": "Johns",
+  "last_name": "Doe",
+  "date_of_birth": "1995-03-04",
+  "sex": "m",
+  "ssn": "111-22-2222",
+  "facility": 13,
+  "primary_insurance": "MediCare",
+  "insurance_relationship": "self",
+  "insured_first_name": "John",
+  "insured_last_name": "Doe",
+  "insurance_policy_type": "primary",
+  "insured_id": 123452
+}'
+----

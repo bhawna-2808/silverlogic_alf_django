@@ -1,0 +1,23 @@
+---
+title: Examiners
+---
+
+= Examiners
+
+== Set Resident Access
+
+[source]
+----
+POST /examiners/:id/resident-access
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`residents` | `integer[]` | **Required**  A list of resident IDs that the examiner should have access to.
+|===
+
+// vim: set ft=asciidoc:

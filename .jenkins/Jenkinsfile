@@ -1,0 +1,134 @@
+pipeline {
+    agent {
+        kubernetes {
+            cloud 'kubernetes'
+            yamlFile '.jenkins/build-pod.yml'
+            defaultContainer 'python3'
+        }
+    }
+
+    environment {
+        BRANCH = "${env.BRANCH_NAME}"
+        WORKSPACE = "${env.WORKSPACE}"
+        RUNDECK_STAGING_JOB_ID = "3cfec259-e7df-4462-b0d2-323a36667190"
+        RUNDECK_PRODUCTION_JOB_ID = "aed09320-f0ce-4e8c-8632-4be76ce2d9bc"
+    }
+
+    stages {
+        stage('Setup') {
+            steps {
+            cache(caches: [
+              arbitraryFileCache(path: '../venv', cacheValidityDecidingFile: 'requirements/*.txt')
+                ]) {
+                  sh '''
+                  apt-get update
+                  apt-get install -y poppler-utils python3-psycopg2 python3-pygraphviz graphviz graphviz-dev libgraphviz-dev
+                  python3 -m venv ../venv
+                  . ../venv/bin/activate
+                  pip install -r requirements/dev.txt
+                  '''
+                }
+            }
+        }
+        stage("Test & Lint & Safety") {
+            parallel {
+                stage("Test") {
+                    steps {
+                        bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'alf-django-test', buildName: 'Test')
+                        script {
+                            try {
+                                sh '''
+                                . ../venv/bin/activate
+                                py.test --junitxml=test-reports/junit.xml
+                                '''
+                                withChecks('Integration Tests') {
+                                  junit 'test-reports/junit.xml'
+                                }
+                            } catch (Exception e) {
+                                bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'alf-django-test', buildName: 'Test')
+                                throw e
+                            }
+                            bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'alf-django-test', buildName: 'Test')
+                        }
+                    }
+                }
+                stage("Lint") {
+                    steps {
+                        bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'alf-django-lint', buildName: 'Lint')
+                        script {
+                            try {
+                                sh '''
+                                . ../venv/bin/activate
+                                flake8
+                                '''
+                                sh '''
+                                . ../venv/bin/activate
+                                isort --check .
+                                '''
+                                sh '''
+                                . ../venv/bin/activate
+                                 black --check .
+                                '''
+                            } catch (Exception e) {
+                                bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'alf-django-lint', buildName: 'Lint')
+                                throw e
+                            }
+                            bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'alf-django-lint', buildName: 'Lint')
+                        }
+                    }
+                }
+                stage("Safety") {
+                    steps {
+                        bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'alf-django-safety', buildName: 'Safety')
+                        script {
+                            try {
+                                sh '''
+                                . ../venv/bin/activate
+                                pip install -U pip
+                                pip install safety
+                                safety check -r requirements/base.txt -r requirements/dev.txt -r requirements/live.txt -r requirements/flower.txt -i 39642
+                                # upgrade reportlab (-i 39642)
+                                NOW=`date +"%Y-%m-%d"`
+                                if [[ "$NOW" > "2023-07-01" ]]; then exit 1; fi
+                                '''
+                            } catch (Exception e) {
+                                bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'alf-django-safety', buildName: 'Safety')
+                                throw e
+                            }
+                            bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'alf-django-safety', buildName: 'Safety')
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            withCredentials([string(credentialsId: 'Rundeck', variable: 'RUNDECK_AUTH_TOKEN')]) {
+                script {
+                    if(BRANCH == "master") {
+                        sh '''
+                        curl \
+                            -XPOST \
+                            --header "X-Rundeck-Auth-Token: $RUNDECK_AUTH_TOKEN" \
+                            --header "Content-Type: application/json" \
+                            --data "{\"options\": {\"version\": \"$GIT_COMMIT\"}}" \
+                            "https://ops.tsl.io/api/18/job/$RUNDECK_STAGING_JOB_ID/executions"
+                        '''
+                    }
+                    if(BRANCH == "production") {
+                        sh '''
+                        curl \
+                            -XPOST \
+                            --header "X-Rundeck-Auth-Token: $RUNDECK_AUTH_TOKEN" \
+                            --header "Content-Type: application/json" \
+                            --data "{\"options\": {\"version\": \"$GIT_COMMIT\"}}" \
+                            "https://ops.tsl.io/api/18/job/$RUNDECK_PRODUCTION_JOB_ID/executions"
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}

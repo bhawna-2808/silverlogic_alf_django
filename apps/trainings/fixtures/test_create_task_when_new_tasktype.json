@@ -1,0 +1,74 @@
+[
+{
+    "fields": {
+        "name": "Facility 1"
+    },
+    "model": "trainings.facility",
+    "pk": 1
+},
+
+{
+    "fields": {
+        "name": "Responsibility 1"
+    },
+    "model": "trainings.responsibility",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "Responsibility 2"
+    },
+    "model": "trainings.responsibility",
+    "pk": 2
+},
+{
+    "fields": {
+        "name": "Responsibility 3"
+    },
+    "model": "trainings.responsibility",
+    "pk": 3
+},
+
+{
+    "fields": {
+        "name": "Position 1",
+        "responsibilities": [1, 2]
+    },
+    "model": "trainings.position",
+    "pk": 1
+},
+{
+    "fields": {
+        "first_name": "first1",
+        "last_name": "last1",
+        "picture": "",
+        "facility": 1,
+        "date_of_hire": "2014-10-31",
+        "positions": [1],
+        "other_responsibilities": [3],
+        "ssn": "1",
+        "phone_number": "905-123-4567",
+        "job_description": "",
+        "is_active": true
+    },
+    "model": "trainings.employee",
+    "pk": 1
+},
+{
+    "fields": {
+        "first_name": "first2",
+        "last_name": "last2",
+        "picture": "",
+        "facility": 1,
+        "date_of_hire": "2014-11-10",
+        "positions": [],
+        "other_responsibilities": [1],
+        "ssn": "1",
+        "phone_number": "905-123-4567",
+        "job_description": "",
+        "is_active": true
+    },
+    "model": "trainings.employee",
+    "pk": 2
+}
+]

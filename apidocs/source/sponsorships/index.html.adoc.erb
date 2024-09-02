@@ -1,0 +1,32 @@
+---
+title: Sponsorships
+---
+
+= Sponsorships
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`name` | `string` | Name of the sponsorship
+|`banner_1` | `image` |
+|`url_1` | `url` |
+|`banner_2` | `image` |
+|`url_2` | `url` |
+|===
+
+++++
+<%= json :sponsorship %>
+++++
+
+== List
+
+[source]
+----
+GET /sponsorships/
+----
+
+// vim: set ft=asciidoc:

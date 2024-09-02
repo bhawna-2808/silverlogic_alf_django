@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>You've been requested to examine a resident at {{ facility.name }}</title>
+</head>
+<body>
+<p>Hi,</p>
+
+<p>You've been requested to examine a resident at {{ facility.name }} for completion of AHCA Form 1823,
+please click this link to view the resident file:</p>
+
+<p>
+    <a href="{{ url }}">
+        {{ url }}
+    </a>
+</p>
+
+<p>
+    Thank you,
+    ALF Boss
+</p>
+</body>
+</html>

@@ -1,0 +1,1042 @@
+---
+title: Courses
+---
+
+= Course
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`task_type` | `integer` | pk TaskType
+|`name` | `string` | 
+|`description` | `string` | 
+|`objective` | `string` | 
+|`published` | `boolean` | 
+|`minimum_score` | `integer` |
+|`language` | `integer` | 1 = English, 2 = Spanish (Default English)
+|`last_started_course_item` | `integer` |  Last started course item if any
+|`statement_required` | `boolean` |  if a statement is required (will be added to the course certificate)
+|===
+
+== List Courses
+
+list courses.
+
+[source]
+----
+GET /courses/
+----
+
+=== Response
+
+++++
+<%= json :course %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|===
+
+== Retrieve Courses
+
+retreive single courses.
+
+[source]
+----
+GET /courses/:id/
+----
+
+== Open Courses
+
+retrieve single courses formatted and create empty task for employee that doesn't have the task assigned
+
+[source]
+----
+GET /courses/:id/open/
+----
+
+=== Response
+
+++++
+<%= json :open_course_response %>
+++++
+
+== Create Courses
+
+create course.
+
+[source]
+----
+POST /courses/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`task_type` | `integer` | pk TaskType
+|`name` | `string` | 
+|`description` | `string` | 
+|`objective` | `string` | 
+|`published` | `boolean` | 
+|`minimum_score` | `integer` |
+|`language` | `integer` | 1 = English, 2 = Spanish (Default English)
+|`item_texts` | `list` | list of CourseItemText **Expandable**
+|`item_videos` | `list` | list of CourseItemVideo **Expandable**
+|`item_boolean` | `list` | list of CourseItemBoolean **Expandable**
+|`item_letter_size_image` | `list` | list of CourseItemLetterSizeImage **Expandable**
+|`item_multi_choices` | `list` | list of CourseItemMultChoice **Expandable**
+|===
+
+
+== Update Courses
+
+Update course.
+
+[source]
+----
+PUT /courses/:id/
+PATCH /courses/:id/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`task_type` | `integer` | pk TaskType
+|`name` | `string` | 
+|`description` | `string` | 
+|`objective` | `string` | 
+|`published` | `boolean` | 
+|`minimum_score` | `integer` |
+|`language` | `integer` | 1 = English, 2 = Spanish (Default English)
+|===
+
+
+== Delete Course
+
+Delete a course.
+
+[source]
+----
+DELETE /courses/:id/
+----
+
+
+== List Course Items
+
+list course items.
+
+[source]
+----
+GET /courses/:id/items/
+----
+
+=== Response
+
+++++
+<%= json :course_item %>
+++++
+
+
+== Add Course Item
+
+add course item.
+
+[source]
+----
+POST /courses/:id/items/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`title` | `string` | 
+|`order` | `integer` | default: 0
+|`image` | `image` | Optional Image
+|`texts` | `list` | list of CourseItemText **Expandable**
+|`videos` | `list` | list of CourseItemVideo **Expandable**
+|`boolean` | `list` | list of CourseItemBoolean **Expandable**
+|`letter_size_image` | `list` | list of CourseItemLetterSizeImage **Expandable**
+|`choices` | `list` | list of CourseItemMultChoice **Expandable**
+|===
+
+
+== Add Employee Course Taken
+
+Start employee course
+
+[source]
+----
+POST /courses/:id/start/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`start_date` | `date` | Date the course was started (Optional)
+|===
+
+== Add Employee Course Taken
+
+Set employee course taken to completed
+
+[source]
+----
+POST /courses/:id/complete/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`score` | `integer` | default: 0
+|`start_date` | `date` | Date the course was started (optional)
+|`completed_date` | `date` | Date the course was completed (optional)
+|`signature` | `string` | Base64 image of the signature
+|===
+
+=== Response
+
+++++
+<%= json :employee_course %>
+++++
+
+== Reset started Course
+
+Reset the Course as if it hasen't been started or completed yet
+
+[source]
+----
+POST /courses/:id/reset/
+----
+
+=== Response
+
+++++
+<%= json :course_last_started_null %>
+++++
+
+
+= Course Item
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`course` | `integer` | pk Course
+|`title` | `string` | 
+|`started_at` | `date` | 
+|`min_duration` | `integer` | minimum duration in seconds that a person should spend in this course section
+|===
+
+== List All Course Items
+
+list all course items.
+
+[source]
+----
+GET /course-items/
+----
+
+=== Response
+
+++++
+<%= json :course_item %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|`course` | `integer` | pk Course
+|===
+
+== Retreive Course Items
+
+retreive single course items.
+
+[source]
+----
+GET /course-items/:id/
+----
+
+== Create Course Item
+
+create course item.
+
+[source]
+----
+POST /course-items/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`course` | `integer` | pk Course
+|`title` | `string` | 
+|`order` | `integer` | default: 0
+|===
+
+
+== Update Course items
+
+Update course item.
+
+[source]
+----
+PUT /course-items/:id/
+PATCH /course-items/:id/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`course` | `integer` | pk Course
+|`title` | `string` | 
+|`order` | `string` | 
+|===
+
+
+== Delete Course Item
+
+Delete a course item.
+
+[source]
+----
+DELETE /course-items/:id/
+----
+
+
+== List Course Item Text
+
+List course items text.
+
+[source]
+----
+GET /course-items/:id/texts/
+----
+
+== Response
+
+++++
+<%= json :course_item_text %>
+++++
+
+
+== Add Course Item Text
+
+Add course item text.
+
+[source]
+----
+POST /course-items/:id/texts/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`question` | `string` | 
+|`answer` | `string` | 
+|`order` | `integer` | default: 0
+|===
+
+
+== List Course Item Video
+
+List course items video.
+
+[source]
+----
+GET /course-items/:id/videos/
+----
+
+== Response
+
+++++
+<%= json :course_item_video %>
+++++
+
+
+== Add Course Item Video
+
+Add course item video.
+
+[source]
+----
+POST /course-items/:id/videos/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`link` | `string` |
+|`embedded_url` | `string` |
+|`order` | `integer` | default: 0
+|===
+
+
+
+== List Course Item Boolean
+
+List course items boolean.
+
+[source]
+----
+GET /course-items/:id/boolean/
+----
+
+== Response
+
+++++
+<%= json :course_item_boolean %>
+++++
+
+
+== Add Course Item Boolean
+
+Add course item boolean.
+
+[source]
+----
+POST /course-items/:id/boolean/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`question` | `string` | 
+|`answer` | `boolean` | default: false
+|`order` | `integer` | default: 0
+|===
+
+
+
+== List Course Item Letter Size Image
+
+List course items letter size image.
+
+[source]
+----
+GET /course-items/:id/letter-size-image/
+----
+
+== Response
+
+++++
+<%= json :course_item_letter_size_image %>
+++++
+
+
+== Add Course Item Letter Size Image
+
+Add course item letter size image.
+
+[source]
+----
+POST /course-items/:id/letter-size-image/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`image` | `image` |
+|`order` | `integer` | default: 0
+|===
+
+== List Course Item Multi Choice
+
+List course items multi choice.
+
+[source]
+----
+GET /course-items/:id/choices/
+----
+
+== Response
+
+++++
+<%= json :course_item_multi_choice %>
+++++
+
+
+== Add Course Item Multi Choice
+
+Add course item multi choice.
+
+[source]
+----
+POST /course-items/:id/choices/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`question` | `string` | 
+|`options` | `list` | list of MultiChoiceOption **Expandable**
+|`answers` | `list` | list of MultiChoiceOption **Expandable**
+|`order` | `integer` | default: 0
+|===
+
+
+
+= CourseItemText
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`item` | `integer` | pk CourseItem
+|`question` | `string` | 
+|`answer` | `string` | 
+|`order` | `integer` | 
+|===
+
+== List All Courses Item Text
+
+list all courses item text.
+
+[source]
+----
+GET /course-item-texts/
+----
+
+=== Response
+
+++++
+<%= json :course_item_text %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|`item` | `integer` | pk CourseItem
+|===
+
+== Retreive Course Item Text
+
+Retreive course item text.
+
+[source]
+----
+GET /course-item-texts/:id/
+----
+
+
+== Delete Course Item Text
+
+Delete course item text.
+
+[source]
+----
+DELETE /course-item-texts/:id/
+----
+
+
+== Update Course Item Text
+
+Update course item text.
+
+[source]
+----
+PUT /course-item-texts/:id/
+PATCH /course-item-texts/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`item` | `integer` | pk CourseItem
+|`question` | `string` | 
+|`answer` | `string` | 
+|`order` | `integer` | default: 0
+|===
+
+
+= CourseItemBoolean
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`item` | `integer` | pk CourseItem
+|`question` | `string` | 
+|`answer` | `boolean` | 
+|`order` | `integer` | 
+|===
+
+== List All Courses Item Boolean
+
+list all courses item boolean.
+
+[source]
+----
+GET /course-item-boolean/
+----    
+
+=== Response
+
+++++
+<%= json :course_item_boolean %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|`item` | `integer` | pk CourseItem
+|===
+
+== Retreive Course Item Boolean
+
+Retreive course item boolean.
+
+[source]
+----
+GET /course-item-boolean/:id/
+----
+
+
+== Delete Course Item boolean
+
+Delete course item boolean.
+
+[source]
+----
+DELETE /course-item-boolean/:id/
+----
+
+
+== Update Course Item boolean
+
+Update course item boolean.
+
+[source]
+----
+PUT /course-item-boolean/:id/
+PATCH /course-item-boolean/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`item` | `integer` | pk CourseItem
+|`question` | `string` | 
+|`answer` | `boolean` | 
+|`order` | `integer` | default: 0
+|===
+
+
+= CourseItemVideo
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`item` | `integer` | pk CourseItem
+|`link` | `string` |
+|`video_id` | `string` |
+|`embedded_url` | `string` |
+|`thumbnail` | `image`
+|`order` | `integer` |
+|===
+
+== List All Courses Item Video
+
+list all courses item videos.
+
+[source]
+----
+GET /course-item-videos/
+----    
+
+=== Response
+
+++++
+<%= json :course_item_video %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|`item` | `integer` | pk CourseItem
+|===
+
+== Retreive Course Item video
+
+Retreive course item video.
+
+[source]
+----
+GET /course-item-videos/:id/
+----
+
+
+== Delete Course Item video
+
+Delete course item video.
+
+[source]
+----
+DELETE /course-item-videos/:id/
+----
+
+
+== Update Course Item video
+
+Update course item video.
+
+[source]
+----
+PUT /course-item-videos/:id/
+PATCH /course-item-videos/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`item` | `integer` | pk CourseItem
+|`link` | `string` |
+|`embedded_url` | `string` |
+|`order` | `integer` | default: 0
+|===
+
+== List All Course Item Letter Size Images
+
+list all course item letter size images.
+
+[source]
+----
+GET /course-item-letter-size-image/
+----
+
+=== Response
+
+++++
+<%= json :course_item_letter_size_image %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|`item` | `integer` | pk CourseItem
+|===
+
+== Retreive Course Item Letter Size Image
+
+Retreive course item letter size image.
+
+[source]
+----
+GET /course-item-letter-size-image/:id/
+----
+
+
+== Delete Course Item Letter Size Image
+
+Delete course item letter size image.
+
+[source]
+----
+DELETE /course-item-letter-size-image/:id/
+----
+
+
+== Update Course Item Letter Size Image
+
+Update course item letter size image.
+
+[source]
+----
+PUT /course-item-letter-size-image/:id/
+PATCH /course-item-letter-size-image/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`item` | `integer` | pk CourseItem
+|`image` | `image` |
+|`order` | `integer` | default: 0
+|===
+
+
+= CourseItemMultiChoice
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`item` | `integer` | pk CourseItem
+|`question` | `string` | 
+|`options` | `list` | list of MultiChoiceOption
+|`answers` | `list` | list of MultiChoiceOption
+|`order` | `integer` | 
+|===
+
+== List All Courses Item Multi Choice
+
+list all courses item multi choice.
+
+[source]
+----
+GET /course-item-choices/
+----
+
+=== Response
+
+++++
+<%= json :course_item_multi_choice %>
+++++
+
+
+== Query Params
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`published` | `string` | values: true | false
+|`item` | `integer` | pk CourseItem
+|===
+
+== Retreive Course Item Multi Choice
+
+Retreive course item multi choice.
+
+[source]
+----
+GET /course-item-choices/:id/
+----
+
+
+== Delete Course Item Multi Choice
+
+Delete course item multi choice.
+
+[source]
+----
+DELETE /course-item-choices/:id/
+----
+
+
+== Update Course Item Multi Choice
+
+Update course item multi choice.
+
+[source]
+----
+PUT /course-item-choices/:id/
+PATCH /course-item-choices/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`item` | `integer` | pk CourseItem
+|`question` | `string` | 
+|`options` | `list` | list of MultiChoiceOption **Expandable**
+|`answers` | `list` | list of MultiChoiceOption **Expandable**
+|`order` | `integer` | default: 0
+|===
+
+
+= MultiChoiceOption
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`label` | `string` | 
+|===
+
+
+
+== List Courses Item Multi Choice Options
+
+list courses item multi choice options.
+
+[source]
+----
+GET /course-item-choices/:id/options/
+----
+
+=== Response
+
+++++
+<%= json :multi_choice_option %>
+++++
+
+
+
+== Add Course Item Multi Choice Option
+
+Add course item multi choice option.
+
+[source]
+----
+POST /course-item-choices/:id/options/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`label` | `string` | 
+|===
+
+
+
+== List Courses Item Multi Choice Answers
+
+list courses item multi choice answers.
+
+[source]
+----
+GET /course-item-choices/:id/anwers/
+----
+
+=== Response
+
+++++
+<%= json :multi_choice_option %>
+++++
+
+
+
+== Add Course Item Multi Choice Anwers
+
+Add course item multi choice anwers.
+
+[source]
+----
+POST /course-item-choices/:id/anwers/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`label` | `string` | 
+|===
+
+
+
+== Start Course Item
+
+Start employee course item. This will also start the parent course if it hasen't been started yet.
+
+[source]
+----
+POST /course-items/:id/start/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`started_at` | `datetime` | Date and time the course item was started (Optional)
+|===
+
+=== Response
+
+++++
+<%= json :employee_course_item %>
+++++
+
+
+// vim: set ft=asciidoc:

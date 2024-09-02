@@ -1,0 +1,76 @@
+---
+title: Resident Bed Holds
+---
+
+= Resident Bed Holds
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` |
+|`resident` | `int` | Resident id.
+|`date_out` | `string` |
+|`date_in` | `string` |
+|`notes` | `string` |
+|`sent_to` | `string` |
+|===
+
+++++
+<%= json :bed_hold %>
+++++
+
+== List
+
+[source]
+----
+GET /resident-bed-holds/
+----
+
+=== Parameters
+
+[cols="2,5"]
+|===
+|Name |Description
+|`resident` | The id of the resident to filter the bed holds
+|===
+
+== Retrieve
+
+[source]
+----
+GET /resident-bed-holds/:id/
+----
+
+== Update
+
+[source]
+----
+PUT /resident-bed-holds/:id/
+PATCH /resident-bed-holds/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `integer` |
+|`resident` | `integer` | The id of the resident
+|`date_out` | `string` |
+|`date_in` | `string` | 
+|`notes` | `string` | 
+|`sent_to` | `string` | 
+|===
+
+== Delete
+
+[source]
+----
+DELETE /resident-bed-holds/:id/
+----
+
+
+
+// vim: set ft=asciidoc:

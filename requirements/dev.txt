@@ -1,0 +1,31 @@
+-r base.txt
+
+# code style
+black==22.12.0
+flake8==6.0.0
+isort==5.11.4
+
+# testing
+pytest==7.2.1
+pytest-cov==4.0.0
+pytest-django==4.5.2
+
+# test factories
+factory-boy==3.2.1
+
+# fake data
+Faker==16.6.1
+
+# prettier python prompt / manage.py shell
+ipython==8.11.0
+
+# helpers
+dj-inmemorystorage==2.1.0
+
+mock==5.0.1
+
+# ipdb
+ipdb==0.13.11
+
+# Test in past dates
+freezegun==1.2.2

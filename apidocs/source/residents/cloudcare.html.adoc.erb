@@ -1,0 +1,164 @@
+---
+title: Resident CloudCare
+---
+
+= Resident 
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` | Resident ID
+|`first_name` | `string` | First name of resident.
+|`last_name` | `string` | Last name of resident.
+|`date_of_birth` | `date` | Resident Birthday.
+|`sex` | `string` | Resident Gender.
+|`date_of_admission` | `date` | Resident date of admission.
+|`ssn` | `string` | Resident Social Security Number.
+|`facility` | `int` | Id of the resident Facility.
+|`primary_insurance` | `string` | Insurance company name.
+|`insurance_relationship` | `string` | Insured relationship.
+|`insured_first_name` | `string` | First name of insured.
+|`insured_last_name` | `string` | Last name of insured.
+|`insurance_policy_type` | `string` | Insurance policy type.
+|`insured_id` | `int` | Insured ID
+|===
+
+++++
+<%= json :resident_cloudcare_response %>
+++++
+
+== List
+
+[source]
+----
+GET /cloudcare/residents/
+----
+
+=== List Example
+
+----
+curl --location --request GET 'https://api.staging.alfboss.com/api/cloudcare/residents/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL'
+----
+
+== Retrieve
+
+
+[source]
+----
+GET /cloudcare/residents/:id/
+----
+
+
+=== Retrieve Example
+
+----
+curl --location --request GET 'https://api.staging.alfboss.com/api/cloudcare/residents/87/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL'
+----
+
+
+== Create
+
+
+[source]
+----
+POST /cloudcare/residents/
+----
+
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`first_name` | `string` | 
+|`last_name` | `string` | 
+|`date_of_birth` | `date` | Format: YYYY-MM-DD
+|`sex` | `string` | one of (m, f, other)
+|`ssn` | `string` | Format: XXX-XXX-XXXX
+|`facility` | `int` | 
+|`primary_insurance` | `string` | 
+|`insurance_relationship` | `string` | one of (self, spouse, other)
+|`insured_first_name` | `string` | 
+|`insured_last_name` | `string` | 
+|`insurance_policy_type` | `string` | one of (primary, secondary, tertiary)
+|`insured_id` | `int` | 
+|===
+
+
+=== Create Example
+
+----
+curl --location --request POST 'https://api.staging.alfboss.com/api/cloudcare/residents/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "date_of_birth": "1995-03-04",
+  "sex": "m",
+  "ssn": "111-22-2222",
+  "facility": 13,
+  "primary_insurance": "MediCare",
+  "insurance_relationship": "self",
+  "insured_first_name": "John",
+  "insured_last_name": "Doe",
+  "insurance_policy_type": "primary",
+  "insured_id": 123452
+}'
+----
+
+
+== Update
+
+[source]
+----
+PATCH /cloudcare/residents/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`first_name` | `string` | 
+|`last_name` | `string` | 
+|`date_of_birth` | `date` | Format: YYYY-MM-DD
+|`ssn` | `string` | Format: XXX-XXX-XXXX
+|`facility` | `int` | 
+|`primary_insurance` | `string` | 
+|`insurance_relationship` | `string` | one of (self, spouse, other)
+|`insured_first_name` | `string` | 
+|`insured_last_name` | `string` | 
+|`insurance_policy_type` | `string` | one of (primary, secondary, tertiary)
+|`insured_id` | `int` | 
+|===
+
+
+=== Update Example
+
+----
+curl --location --request PATCH 'https://api.staging.alfboss.com/api/cloudcare/residents/87/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "first_name": "Johns",
+  "last_name": "Doe",
+  "date_of_birth": "1995-03-04",
+  "sex": "m",
+  "ssn": "111-22-2222",
+  "facility": 13,
+  "primary_insurance": "MediCare",
+  "insurance_relationship": "self",
+  "insured_first_name": "John",
+  "insured_last_name": "Doe",
+  "insurance_policy_type": "primary",
+  "insured_id": 123452
+}'
+----
+
+
+// vim: set ft=asciidoc:

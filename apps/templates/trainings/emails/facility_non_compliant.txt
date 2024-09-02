@@ -1,0 +1,12 @@
+{% autoescape off %}Your facility is not compliant
+
+The following items must be completed:
+
+{% for status, task_types in status_types %}
+{{ status }}
+{% for task_type in task_types %}{% if task_type.task_set.count %}
+    {{ task_type }}
+{% for task in task_type.task_set.all %}
+        {{ task.employee }}: {{ site }}/employees/{{ task.employee.pk }}
+{% endfor %}{% endif %}{% endfor %}{% endfor %}{% endautoescape %}
+

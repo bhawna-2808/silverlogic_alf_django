@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    <style>
+      @page {
+        size: letter landscape;
+        margin: 1cm;
+      }
+      body {
+      }
+      th, td {
+        padding: 2px;
+        font-size: 4pt;
+        line-height: 8pt;
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        {% for header_item in header_items %}
+          <th>{{ header_item }}</th>
+        {% endfor %}
+      </tr>
+      {% for line in lines %}
+        <tr>
+          {% for column in line %}
+            <td>{{ column }}&nbsp;</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

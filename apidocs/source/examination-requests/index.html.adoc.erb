@@ -1,0 +1,62 @@
+---
+title: Examination Requests
+---
+
+= Examination Requests
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`resident` | `integer` | The ID of the resident.
+|`examiner` | `integer` | The User-ID of the examiner.
+|`status` | `string` | possible values: ´sent´, ´examined´
+|===
+
+=== Example
+
+++++
+<%= json :examination_request %>
+++++
+
+== Create
+
+[source]
+----
+POST /examination-requests/
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`resident` | `integer` | The ID of the resident that should be examined.
+|`examiner` | `integer` | The User-ID of the examiner that should examine the resident.
+|===
+
+
+== List
+
+[source]
+----
+GET /examination-requests/
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`resident` | `integer` | only return examination requests with the specified resident.
+|`status` | `string` | only return examination requests with the specified status. possible values: ´sent´, ´examined´
+|===
+
+
+// vim: set ft=asciidoc:

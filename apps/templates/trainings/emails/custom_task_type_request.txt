@@ -1,0 +1,6 @@
+{% autoescape off %}
+Hello,
+
+There is a new custom task type request:
+{{ admin_url }}
+{% endautoescape %}

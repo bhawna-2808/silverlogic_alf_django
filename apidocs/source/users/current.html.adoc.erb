@@ -1,0 +1,29 @@
+---
+title: Current User
+---
+
+= Current User
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`user` | `object` | the current user
+|`facility` | `object` | the current facility
+|===
+
+== Get
+
+[source]
+----
+GET /currentuser/
+----
+
+=== Response
+
+++++
+<%= json :current_user %>
+++++

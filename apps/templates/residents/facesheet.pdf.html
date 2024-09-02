@@ -1,0 +1,244 @@
+{% load thumbnail %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ resident }} Facesheet</title>
+
+    <style>
+        @page {
+            size: letter portrait;
+            @frame header_frame {           /* Static Header Frame */
+                -pdf-frame-content: header_content;
+                left: 57pt; width: 525pt; top: 20pt; height: 40pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 57pt; width: 525pt; top: 60pt; height: 700pt;
+            }
+            @frame footer_frame {           /* Static Footer Frame */
+                -pdf-frame-content: footer_content;
+                left: 57pt; width: 525pt; top: 745pt; height: 40pt;
+            }
+        }
+
+        body {
+            font-family: Helvetica, Arial, Sans-Serif;
+            font-size: 10pt;
+        }
+
+        .header {
+            font-size: 10pt;
+        }
+        .footer {
+            text-align: center;
+        }
+
+        .facility-info {
+            font-size: 10pt;
+        }
+
+        .sub-header {
+            font-size: 12pt;
+            font-weight: 700;
+            margin: 12pt 0 6pt 0;
+            padding: 0;
+
+        }
+
+        .sub-header2 {
+            font-size: 12pt;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        table th {
+            font-size: 12pt;
+            font-weight: 700;
+        }
+
+        .section {
+            border-radius: 5pt;
+            border: 1pt solid lightgray;
+            padding: 8pt;
+            margin-bottom: 6pt;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'header_frame' -->
+<div id="header_content" class="header">
+    <table width="100%">
+        <tr>
+            <td width="65%" style="font-weight: bold">{{resident.facility.name|default:"-"}}</td>
+            <td width="35%" style="text-align: right">Admitted {{resident.date_of_admission|date:"SHORT_DATE_FORMAT"|default:"-"}}</td>
+        </tr>
+        <tr>
+            <td class="facility-info" colspan="2">{{resident.facility.address}} - {{resident.facility.contact_phone}}</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content" class="footer">
+    <div class="pagenum">
+        <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+    Created with ALF Boss
+</div>
+
+<p class="sub-header">Personal Info</p>
+
+<table width="100%" style="margin-bottom: 6px">
+    <tr>
+        <td width="32%" style="font-weight: 700">{{ resident.first_name|default:"-" }}</td>
+        <td width="32%" style="font-weight: 700">{{ resident.last_name|default:"-" }}</td>
+        <td width="24%" rowspan="9">
+            {% if resident.avatar %}
+            <img class="avatar" src="{% thumbnail resident.avatar 180x180 %}"/>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Age: {{ resident.age|default:"-" }}</td>
+        <td>Birth date: {{ resident.date_of_birth|date:"SHORT_DATE_FORMAT"|default:"-" }}</td>
+    </tr>
+    <tr>
+        <td>SSN: {{ resident.ssn|default:"-" }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Sex: {{ resident.sex|default:"-" }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Email: {{ resident.contact_1_email|default:"-" }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Martial status: {{ resident.marital_status|default:"-" }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Religion: {{ resident.religion|default:"-" }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Race: {{ resident.get_race_display|default:"-" }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+<p class="sub-header">Emergency Contact(s)</p>
+
+<table width="70%">
+    <tr>
+        <th width="35%" style="text-align: left">Primary Contact</th>
+        <th width="35%" style="text-align: left">Secondary Contact</th>
+    </tr>
+    <tr>
+        <td>{{resident.contact_1_name|default:"-"}}</td>
+        <td>{{resident.contact_2_name|default:"-"}}</td>
+    </tr>
+    <tr>
+        <td>{{resident.contact_1_relationship|default:"-"}}</td>
+        <td>{{resident.contact_2_relationship|default:"-"}}</td>
+    </tr>
+    <tr>
+        <td>Home: {{resident.contact_1_home_phone|default:""}}</td>
+        <td>Home: {{resident.contact_2_home_phone|default:""}}</td>
+    </tr>
+    <tr>
+        <td>Mobile: {{resident.contact_1_mobile_phone|default:""}}</td>
+        <td>Mobile: {{resident.contact_2_mobile_phone|default:""}}</td>
+    </tr>
+    <tr>
+        <td>{{resident.contact_1_email|default:"-"}}</td>
+        <td>{{resident.contact_2_email|default:"-"}}</td>
+    </tr>
+    <tr>
+        <td>{{resident.contact_1_address|default:"-"}}</td>
+        <td>{{resident.contact_2_address|default:"-"}}</td>
+    </tr>
+</table>
+
+<p class="sub-header">Allergies</p>
+<div class="section">{{resident.allergies|default:"-"}}</div>
+
+<p class="sub-header">Diagnosis</p>
+<div class="section">{{resident.diagnosis|default:"-"}}</div>
+
+<table width="100%">
+    <tr>
+        <th class="sub-header2" width="50%" style="text-align: left">Medical</th>
+        <th class="sub-header2" width="50%">Long Term Care</th>
+    </tr>
+    <tr>
+        <td valign="top">
+            <div {% if not resident.is_under_hospice_care %}style="padding-bottom: 8px;"{% endif %}>
+                Under hospice care: {{resident.is_under_hospice_care|yesno|upper}}</div>
+            {% if resident.is_under_hospice_care %}
+                <div>Hospice Provider: {{ resident.hospice_provider }}</div>
+                <div style="padding-bottom: 8px;">Hospice Provider Phone #: {{ resident.hospice_provider_phone }}</div>
+            {% endif %}
+            <div {% if not resident.is_dialysis_patient %}style="padding-bottom: 8px;"{% endif %}>
+                Dialysis patient: {{resident.is_dialysis_patient|yesno|upper}}</div>
+            {% if resident.is_dialysis_patient %}
+                <div>Dialysis Center: {{ resident.dialysis_center }}</div>
+                <div style="padding-bottom: 8px;">Dialysis Center Phone #: {{ resident.dialysis_center_phone }}</div>
+            {% endif %}
+            <div>Assistive Care Services: {{resident.has_assistive_care_services|yesno|upper }}</div>
+            <div style="padding-bottom: 20px;">Optional State Supplementation: {{ resident.has_oss|yesno|upper }}</div>  
+        </td>
+        <td valign="top">
+            <div>Long term care: {{resident.has_long_term_care_program|yesno|upper }}</div>
+            {% if resident.has_long_term_care_program %}
+                <div>Long Term Care Provider: {{ resident.long_term_care_provider }}</div>
+                <div>Long Term Care Number: {{ resident.long_term_care_number }}</div>
+                <div>Case Worker Name: {{ resident.case_worker_first_name }} {{ resident.case_worker_last_name }}</div>
+                <div style="padding-bottom: 20px;">Case Worker Name Phone: {{ resident.case_worker_phone }}</div>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<table width="100%">
+    <tr>
+        <th class="sub-header2" width="32%" style="text-align: left">Primary Physician</th>
+        <th class="sub-header2" width="32%">Psychiatric Physician</th>
+        <th class="sub-header2" width="36%">Insurance</th>
+    </tr>
+    <tr>
+        <td valign="top">
+            <div>{{resident.primary_doctor_name|default:"-"}}</div>
+            <div>{{resident.primary_doctor_phone|default:"-"}}</div>
+            <div>{{resident.primary_doctor_address|default:"-"}}</div>
+            <div>{{resident.primary_doctor_email|default:"-"}}</div>
+        </td>
+        <td valign="top">
+            <div>{{resident.psychiatric_doctor_name|default:"-"}}</div>
+            <div>{{resident.psychiatric_doctor_phone|default:"-"}}</div>
+            <div>{{resident.psychiatric_doctor_address|default:"-"}}</div>
+            <div>{{resident.psychiatric_doctor_email|default:"-"}}</div>
+        </td>
+        <td valign="top">
+            <div>Primary: {{resident.primary_insurance|default:"-"}}</div>
+            <div>Primary #: {{resident.primary_insurance_number|default:"-"}}</div>
+            <div>Medicaid #: {{resident.medicaid_number|default:"-"}}</div>
+            <div>MMA Plan: {{resident.mma_plan|default:"-"}}</div>
+            <div>MMA #: {{resident.mma_number|default:"-"}}</div>
+            <div>Rx Plan: {{resident.drug_plan_name|default:"-"}}</div>
+            <div>Rx Plan #: {{resident.drug_plan_number|default:"-"}}</div>
+        </td>
+    </tr>
+</table>
+
+<p class="sub-header">Notes</p>
+<div class="section">{{resident.medical_notes|default:"-"}}</div>
+</body>
+</html>

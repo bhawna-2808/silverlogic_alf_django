@@ -1,0 +1,8 @@
+{% autoescape off %}{{ subject }}
+{% if count %}
+The following {{ event_word }} {{ to_be }} happening in your facility today. {% if count > 1 %}Please confirm the attendance of each by clicking the links:{% else %}Please confirm its attendance by clicking the link:{% endif %}
+
+{% for training_event in training_events %}
+{{ training_event.training_for.name }} at {{ training_event.start_time|date:'g:i a' }} at {{ training_event.location }}: {{ site }}/training-events/{{ training_event.pk }}
+{% endfor %}
+{% endif %}{% endautoescape %}

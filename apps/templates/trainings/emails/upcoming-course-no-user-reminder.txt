@@ -1,0 +1,1 @@
+Reminder from ALF Trainings: Hi {{first_name}}, {{task_type_name}} is due on {{date}}.

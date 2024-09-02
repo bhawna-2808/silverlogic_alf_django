@@ -1,0 +1,130 @@
+---
+title: Subscriptions
+---
+
+= Subscriptions
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`billing_interval` | `integer` | The id of the billing interval the subscription uses.  **Expandable**
+|`status` | `string` a| Possible values:
+
+* `trialing`
+* `active`
+* `past_due` - Payment was attempted but it has failed.  It will be retried in a few days.  During this status the facility can still use the resident module.
+If it continues to fail the status will change to `canceled`.
+* `canceled`
+* `pending_cancel` - The facility administrator has initiated their subscription cancellation.  It will remain in this state until
+the end of the billing cycle, then it will become `canceled`.
+
+|`current_period_start` | `datetime` | When the current billing period started.  Null for trials.
+|`current_period_end` | `datetime` | When the current billing ends.  Null for trials.
+|`trial_start` | `datetime` | When the subscription's trial started, if it had one.
+|`trial_end` | `datetime` | When the subscription's trial ends, if it had one.
+|`has_stripe_id` | `boolean` | If the subscription has a stripe ID associated
+
+|===
+
+=== Subscription Status State Diagram
+
+++++
+<%= image_tag 'subscription-status-fsm.png' %>
+++++
+
+== Create
+
+Create a new subscription for your facility.  A facility can only have one current subscription at a time.
+
+[source]
+----
+POST /subscriptions/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`stripe_token` | `string` | **Required** Token retrieved from Stripe.js.  Contains payment information.
+|`billing_interval` | `integer` | **Required** The id of the billing interval to use for the subscription.
+|===
+
+== Retrieve
+
+Retrieve a subscription.
+
+[source]
+----
+GET /subscriptions/:id/
+----
+
+== Update
+
+Update a subscription.
+
+[source]
+----
+PATCH /subscriptions/:id/
+----
+
+=== Input
+
+Same as create.  Each input can be sent independently or together.  For example, you may change the subscription payment method
+by only sending the `stripe_token` as input.
+
+== Cancel
+
+Cancel a subscription.  The subscription status will change to `pending_cancel` and remain that way
+until the end of the billing cycle.  During this time the facility will still be allowed access to
+the resident module.  Afterwards the subscription status will change to `canceled`.
+
+[source]
+----
+DELETE /subscriptions/:id/
+----
+
+== Current Subscription
+
+Retrieve the current subscription, if any.  A current subscription is any subscription that is not canceled.
+
+[source]
+----
+GET /subscriptions/current/
+----
+
+=== Response when facility has no active subscription
+
+[source,json]
+----
+{}
+----
+
+== Start Trial
+
+Start a trial subscription.  Each facility may only do this one time.
+
+[source]
+----
+POST /subscriptions/start-trial/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`billing_interval` | `integer` | **Required** The id of the billing interval to use for the subscription.
+|`stripe_token` | `string` | The token returned by stripe.
+|`ebook` | `boolean` | If true after the trial is created the user will be sent an ebook, defaults to false
+|`no_payment` | `boolean` | If false the stripe_token will be required, defaults to false
+|===
+
+
+// vim: set ft=asciidoc:

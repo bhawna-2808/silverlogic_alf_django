@@ -1,0 +1,153 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: silverlogic/python3.8
+      - image: silverlogic/postgres9.6
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y poppler-utils
+            sudo apt-get install -y python3.8-dev
+            sudo apt-get install -y postgresql-contrib
+            sudo apt-get install -y libpq-dev gcc
+            python3 -m venv ../venv
+            . ../venv/bin/activate
+            pip install -U pip
+            pip install -r requirements/dev.txt
+      - save_cache:
+          key: v2-dependencies-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
+          paths:
+            - ../venv
+      - run:
+          name: Run tests
+          command: |
+            . ../venv/bin/activate
+            mkdir test-reports
+            export SECRET_KEY=notsecret
+            export DATABASE_URL="postgres://postgres:12345@localhost:5432/ci"
+
+            export CELERY_BROKER_URL="N/A"
+            export URL="http://localhost"
+            export FRONT_URL="http://app.localhost"
+            export DJOSER_DOMAIN="example.com"
+            export STRIPE_API_KEY="sk_test_HWpbbvI3KrHBqvyzCTJCEejG"
+            export CUSTOM_TASK_TYPE_ADMIN_EMAIL="admin@example.com"
+            export AUTH_TOKEN_DURATION_MINUTES="100"
+            export TWILIO_ACCOUNT_SID=""
+            export TWILIO_AUTH_TOKEN=""
+            export TWILIO_PHONE_NUMBER=""
+            export SENDGRID_API_KEY=""
+            export VIRTRU_HMAC_TOKEN=""
+            export VIRTRU_SECRET=""
+            export GOOGLE_API_KEY=""
+            py.test --cov="apps" --junitxml=test-reports/junit.xml tests
+      - store_test_results:
+          path: test-reports
+      - store_artifacts:
+          path: test-reports
+      - run:
+          name: Upload code coverage
+          command: |
+            . ../venv/bin/activate
+            pip install codecov
+            codecov --token="$CODECOV_TOKEN"
+
+  lint:
+    docker:
+      - image: silverlogic/python3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python3.8-dev
+            sudo apt-get install -y postgresql-contrib
+            sudo apt-get install -y libpq-dev gcc
+            python3 -m venv ../venv
+            . ../venv/bin/activate
+            pip install -U pip
+            pip install -r requirements/dev.txt
+      - save_cache:
+          key: v2-dependencies-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
+          paths:
+          - ../venv
+      - run:
+          name: Run flake8
+          command: |
+            . ../venv/bin/activate
+            flake8
+      - run:
+          name: run isort
+          command: |
+            . ../venv/bin/activate
+            isort --check
+
+  deploy:
+    docker:
+      - image: silverlogic/python3.8
+    working_directory: ~/repo
+    steps:
+      - deploy:
+          name: Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              curl -XPOST "https://ops.tsl.io/api/17/job/$RUNDECK_STAGING_JOB_ID/executions?authtoken=$RUNDECK_AUTH_TOKEN"
+              curl -XPOST "https://ops.tsl.io/api/17/job/$RUNDECK_STAGING_DOCS_JOB_ID/executions?authtoken=$RUNDECK_AUTH_TOKEN"
+            elif [ "${CIRCLE_BRANCH}" == "production" ]; then
+              curl -XPOST "https://ops.tsl.io/api/17/job/$RUNDECK_PRODUCTION_JOB_ID/executions?authtoken=$RUNDECK_AUTH_TOKEN"
+            fi
+
+workflows:
+  version: 2
+  test-lint-deploy:
+    jobs:
+      - test
+      - lint
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+                - production
+          requires:
+            - test
+            - lint
+          context: org-global
+  nightly-staging:
+    triggers:
+      - schedule:
+          cron: "0 4 * * *"  # midnight est
+          filters:
+            branches:
+              only: master
+    jobs:
+      - test
+      - lint
+      - deploy:
+          requires:
+            - test
+            - lint
+          context: org-global
+  nightly-production:
+    triggers:
+      - schedule:
+          cron: "0 4 * * *"  # midnight est
+          filters:
+            branches:
+              only: production
+    jobs:
+      - test
+      - lint

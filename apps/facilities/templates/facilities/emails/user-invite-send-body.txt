@@ -1,0 +1,10 @@
+Hi,
+
+{{ invited_by.get_full_name }} has invited you to be a {{ role }} at their facility: {{ facility.name }}.
+
+To accept their invite and create your user please visit the following link in your browser:
+
+{{ url }}
+
+Thank you,
+ALF Boss

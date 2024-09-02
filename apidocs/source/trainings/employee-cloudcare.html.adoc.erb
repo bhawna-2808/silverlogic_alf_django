@@ -1,0 +1,121 @@
+---
+title: Employee CloudCare
+---
+
+= Employee 
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` | Employee ID
+|`first_name` | `string` | First name of employee.
+|`last_name` | `string` | Last name of employee.
+|`positions_detail` | `array[obj]` | Employee positions.
+|`date_of_hire` | `date` | employee date of hire
+|`facility` | `int` | Id of the employee Facility.
+
+|===
+
+++++
+<%= json :employee_cloudcare_response %>
+++++
+
+== List
+
+[source]
+----
+GET /cloudcare/employees/
+----
+
+=== List Example
+
+----
+curl --location --request GET 'https://api.staging.alfboss.com/api/cloudcare/employees/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL'
+----
+
+== Retrieve
+
+[source]
+----
+GET /cloudcare/employees/:id/
+----
+
+=== Retrieve Example
+
+----
+curl --location --request GET 'https://api.staging.alfboss.com/api/cloudcare/employees/312/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL'
+----
+
+== Create
+
+
+[source]
+----
+POST /cloudcare/employees/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`first_name` | `string` | 
+|`last_name` | `string` | 
+|`positions` | `array[int]` | send position IDs on array. e.g: "positions": [23,43]
+|`facility` | `int` | Facility ID
+|===
+
+=== Create Example
+
+----
+curl --location --request POST 'https://api.staging.alfboss.com/api/cloudcare/employees/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "first_name": "Jhon",
+    "last_name": "Doe",
+    "positions": [10, 9],
+    "facility": 276,
+    "date_of_hire": "2008-10-13"
+}'
+----
+
+== Update
+
+[source]
+----
+PATCH /cloudcare/employees/:id/
+----
+
+== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` | employee ID
+|`first_name` | `string` | 
+|`last_name` | `string` | 
+|`positions` | `array[int]` | send position IDs on array. e.g: "positions": [23,43]
+|`facility` | `int` | Facility ID
+|===
+
+=== Update Example
+
+----
+curl --location --request PATCH 'https://api.staging.alfboss.com/api/cloudcare/employees/350/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "first_name": "Jhons",
+    "last_name": "Doe",
+    "positions": [10],
+    "facility": 276,
+    "date_of_hire": "2008-10-13"
+}'
+----
+
+// vim: set ft=asciidoc:

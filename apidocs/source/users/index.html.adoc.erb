@@ -1,0 +1,129 @@
+---
+title: Users
+---
+
+= Users
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`username` | `string` |
+|`is_superuser` | `boolean` |
+|`first_name` | `string` |
+|`last_name` | `string` |
+|`facility_user` | `object` | Facility user linked to user
+|`email` | `string` |
+|`role` | `string` | Possible values: `account_admin`, `manager`, `examiner`.
+|`resident_access` | `list` | Only for role `manager`. List of residents this user is allowed to see. If there is no instance of `UserResidentAccess`, the manager is allowed to see the resident.
+|===
+
+=== Example
+
+++++
+<%= json :user %>
+++++
+
+
+== Delete
+
+You may not delete yourself.
+
+[source]
+----
+DELETE /users/:id/
+----
+
+
+== List
+
+[source]
+----
+GET /users/
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`role` | `string` | Only return users with the specified role(s).  Possible values: `account_admin`, `manager`, `examiner`.
+|`not_linked` | `boolean` | Returns linked or not linked users with employees.
+|===
+
+== Login
+
+Authenticate user 
+
+[source]
+----
+POST /login/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`username` | `string` | chosen username
+|`password` | `string` | chosen password
+|`client_id` | `string` | the id of the client being used
+|===
+
+
+=== Response
+
+++++
+<%= json :auth_token %>
+++++
+
+
+== Invite Code Verification
+
+Verify invitation code
+
+[source]
+----
+POST /login/verify/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`code` | `string` | invite code recieved by SMS
+|===
+
+
+=== Response
+
+++++
+<%= json :employee_detail %>
+++++
+
+== Update
+
+Update the user
+
+[source]
+----
+PATCH /users/:id/
+----
+
+=== Input
+
+[cols="1,2,5"]
+|===
+|Name |Type |Description
+|`resident_access` | `list` | List of residents allowed (or not) to be seen by the manager
+|===
+
+// vim: set ft=asciidoc:

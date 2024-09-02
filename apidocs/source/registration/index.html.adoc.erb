@@ -1,0 +1,32 @@
+---
+title: Registration
+---
+
+== Employee registration
+Employee registration from the app
+
+[source]
+----
+POST /signup/employee/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`username` | `string` |
+|`password` | `string` |
+|`conf_password` | `string` |
+|`phone` | `string` |
+|===
+
+
+=== Response
+
+++++
+<%= json :user %>
+++++
+
+// vim: set ft=asciidoc:

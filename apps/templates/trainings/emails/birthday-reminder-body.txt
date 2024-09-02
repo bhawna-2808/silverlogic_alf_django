@@ -1,0 +1,5 @@
+Hello ALF Administrator,
+Employee {{ full_name }} has a birthday tomorrow. Don't forget to wish them a great one!
+
+Best,
+ALF Boss

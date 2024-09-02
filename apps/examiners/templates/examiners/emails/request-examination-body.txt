@@ -1,0 +1,7 @@
+Hello,
+
+You've been requested to examine a resident at {{ facility.name }} for completion of AHCA Form 1823,
+please click this link to view the resident file: {{ url }}.
+
+Thank you,
+ALF Boss

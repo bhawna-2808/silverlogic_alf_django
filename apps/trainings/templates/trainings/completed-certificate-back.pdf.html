@@ -1,0 +1,148 @@
+{% load static %}
+
+<html>
+  <head>
+    <style>
+      @page {
+        size: letter portrait;
+        @frame content_frame {
+          width: 791px;
+          height: 612px;
+          margin-top: 90px;
+          left: 15px;
+        }
+        @frame background_content {
+          -pdf-frame-content: background-content;
+          width: 791px;
+          height: 612px;
+          left: 15px;
+        }
+        @frame footer_left {
+          -pdf-frame-content: footer-left;
+          width: 410px;
+          left: 15px;
+          bottom: 535px;
+          height: 200px;
+        }
+        @frame footer_right{
+          -pdf-frame-content: footer-right;
+          width: 791px;
+          left: 15px;
+          top: 480px;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 791px;
+        font-family: 'Times New Roman', Times, serif
+      }
+      .certificate-container {
+        position: relative;
+      }
+      .base-certificate {
+        width: 791px;
+      }
+      .text-wrap {
+        width: 791px;
+        padding: 0 118px;
+      }
+      .text-container {
+        position: relative;
+        width: 791px;
+      }
+      .agenda-text {
+        padding-top: 24px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 36px;
+      }
+      .agenda-training-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        text-align: center;
+      }
+      .agenda {
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      #footer-right {
+        font-size: 12px;
+        text-align: right;
+      }
+      #footer-right p {
+        margin: 0;
+        padding: 0 118px;
+      }
+      #footer-left p {
+        margin: 0;
+        padding: 0;
+      }
+      #footer-left {
+        padding-left: 90px;
+        padding-right: 40px;
+        font-size: 9px;
+        line-height: 1.1;
+      }
+      td {
+        padding-left: 90px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="background-content">
+      <img class="base-certificate" src="{% static 'trainings/certificate-back.png' %}" />
+    </div>
+    <div id="footer-left">
+        <table style="height: 200px" border="1px solid black">
+            <tr>
+                <td valign="bottom" style="width:410px;">
+          <p>
+        Training materials written by<br/>
+        {% if course.trainer %}
+        {{ course.trainer.full_name }}
+        {{ course.trainer.contact_info|linebreaksbr }}
+        {% else %}
+        Paul Sturdgess-Hayes<br/>
+        Blossoms Workforce Academy LLC<br/>
+        blossomsllc@outlook.com<br/>
+        (386) 682-9759
+        {% endif %}
+        <br /><br />
+        {% if course.trainer %}
+        {{ course.trainer.endorsements|linebreaksbr }}
+        {% else %}
+        BSc in Health & Social Care - 1st Class Honours<br/>
+        AHCA Core Trainer (Cert. #20286)<br/>
+        FL Assisted Living Administrator (Cert. #141129584)<br/>
+        Alzheimer’s & Dementia (CADDCT 53500)<br/>
+        Certified Dementia Care Practitioner (CDP 243259<br/>
+        First Aid, CPR and AED (Cert. American Red Cross)<br/>
+        ServSafe (NRA) Instructor & Proctor<br/>
+        Certified Food Protection Manager (CFPM)
+        {% endif %}
+      </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="footer-right">
+      <p>{{employee.first_name}} {{employee.last_name}}</p>
+      <p>completed on {{completed_date|date:"m/d/Y" }}</p>
+    </div>
+    <div class="certificate-container">
+      <div class="text-wrap">
+        <div class="text-container">
+          <p class="agenda-text">Agenda</p>
+          <p style="margin:0 inherit;padding:0 inherit" class="agenda-training-name">{{task_name}}</p>
+          <p style="margin:0 inherit;padding:0 inherit" class="agenda">{{course.description}}</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

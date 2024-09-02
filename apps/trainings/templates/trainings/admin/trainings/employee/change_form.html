@@ -1,0 +1,67 @@
+{% extends 'admin/change_form.html' %}
+
+{% load i18n admin_urls %}
+
+{% if save_on_top %}{% block submit_buttons_top %}{% endblock %}{% endif %}
+
+{% block inline_field_sets %}
+    {% for inline_admin_formset in inline_admin_formsets %}
+        {% if forloop.counter == 3 %}
+            <h2>
+                Education Requirement(s)
+            </h2>
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th><div class="th">
+                            Responsibility
+                        </div></th>
+                        <th><div class="th">
+                            Total Hours
+                        </div></th>
+                        <th><div class="th">
+                           Type
+                        </div></th>
+                        <th><div class="th">
+                            End Date
+                        </div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for compliance in compliance_list %}
+                        <tr>
+                            <td>
+                                {{ compliance.requirement.responsibility.name }}
+                            </td>
+                            <td>
+                                {{ compliance.accumulated_total }} hours
+                            </td>
+                            <td>
+                                {{ compliance.requirement.type_name }}
+                            </td>
+                            <td>
+                                {{ compliance.end_date }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% include inline_admin_formset.opts.template %}
+    {% endfor %}
+{% endblock %}
+
+{% block submit_buttons_bottom %}
+    <div class="submit-row">
+        {% url opts|admin_urlname:'reapply_responsibilities' original.pk|admin_urlquote as reapply_responsibilities_url %}
+        <a href="{% add_preserved_filters reapply_responsibilities_url %}" class="">{% trans "Reapply Responsibilities" %}</a>
+        |
+        {% url opts|admin_urlname:'reapply_positions' original.pk|admin_urlquote as reapply_positions_url %}
+        <a href="{% add_preserved_filters reapply_positions_url %}" class="">{% trans "Reapply Positions" %}</a>
+    </div>
+    {{ block.super }}
+{% endblock %}
+
+{% block after_field_sets %}
+    {{ block.super }}
+{% endblock %}

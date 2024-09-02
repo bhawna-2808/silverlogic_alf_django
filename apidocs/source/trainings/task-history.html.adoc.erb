@@ -1,0 +1,63 @@
+---
+title: Task History
+---
+
+= TaskHistory
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`employee` | `integer` | pk Employee
+|`type` | `integer` | pk TaskType
+|`antirequisite` | `integer` | pk Antirequisite
+|`completion_date` | `date` |
+|`expiration_date` | `date` |
+|`status` | `integer` |
+|`credit_hours` | `float` |
+|===
+
+
+== Current User Task History
+
+Retrieve Current User tasks histories.
+
+[source]
+----
+GET /task_histories/me/
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`object` | `string` | define the format of the response.  Possible values: `true`.
+|`expand` | `string` | expand specific attribute in response. Expand multiple fields with a comma.
+|===
+
+
+=== Response
+
+++++
+<%= json :task_history %>
+++++
+
+=== Response with object=true
+
+++++
+<%= json :task_history_object %>
+++++
+
+=== Response with expand=type.course.items
+
+++++
+<%= json :task_history_expanded %>
+++++
+
+// vim: set ft=asciidoc:

@@ -1,0 +1,147 @@
+{% load static %}
+
+<html>
+
+  <head>
+    <style>
+      @page {
+        size: letter portrait;
+        @frame content_frame {
+          width: 791px;
+          height: 612px;
+          margin-top: 198px;
+          left: 15px;
+        }
+        @frame background_content {
+          -pdf-frame-content: background-content;
+          width: 791px;
+          height: 612px;
+          left: 15px;
+        }
+        @frame left_signature {
+          -pdf-frame-content: left-signature;
+          width: 500px;
+          left: 15px;
+          top: 420px;
+        }
+        @frame right_signature {
+          -pdf-frame-content: right-signature;
+          width: 396px;
+          left: 15px;
+          top: 420px;
+          left: 396px;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 791px;
+        font-family: 'Times New Roman', Times, serif
+      }
+      .certificate-container {
+        position: relative;
+      }
+      .base-certificate {
+        width: 791px;
+      }
+      .text-wrap {
+        width: 791px;
+        padding: 0 83px;
+      }
+      .text-container {
+        position: relative;
+        width: 791px;
+      }
+      .user-name {
+        text-align: center;
+        margin: 27px 0;
+        box-sizing: border-box;
+        font-size: 30px;
+        font-weight: bold;
+      }
+      .training-name {
+        margin-top: 46px;
+        font-size: 23px;
+        line-height: 1.2;
+        font-weight: bold;
+        padding-left: 118px;
+        padding-right: 118px;
+        text-align: center;
+      }
+      .signatures-container {
+        margin-top: 138px;
+        padding-left: 40px;
+        padding-right: 40px;
+        font-size: 12px;
+      }
+      .signature {
+        padding-left: 118px;
+        width: 50%;
+      }
+      .online-training-text {
+        margin-top: 0;
+        padding-top: 57px;
+      }
+      .online-training-text-custom-trainer {
+        margin-top: 0;
+        padding-top: 6px;
+      }
+      .trainer-signature-p {
+        text-align: center;
+        padding-left: 55px;
+        padding-right: 100px;
+        width: 300px;
+      }
+      .employee-signature {
+        width: auto;
+        height: 30px;
+      }
+      .signature.employee {
+        padding-left: 70px;
+        padding-right: 100px;
+      }
+      .date {
+        margin-top: 0;
+        padding-top: 57px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="background-content">
+      {% if not course.trainer %}<img class="base-certificate" src="{% static 'trainings/certificate-front.png' %}" />{% endif %}
+      {% if course.trainer %}<img class="base-certificate" src="{% static 'trainings/certificate-front-no-signature.png' %}" />{% endif %}
+    </div>
+    <div id="left-signature" class="signatures-container">
+      <div class="signature">
+        {% if not course.trainer %}
+          <p class="trainer-name">Paul Sturdgess-Hayes, BSc, CADDCT, CDP, CFPM</p>
+          <p class="online-training-text">Completed online w/ ALF Boss Trainings - {{facility.name}}</p>
+        {% else %}
+          <p class="trainer-name">{{ course.trainer.full_name }}</p>
+          <p class="trainer-signature-p">
+            <img class="employee-signature"
+              src="{% if course.trainer.signature %}{{ course.trainer.signature.url }}{% else %}{% static 'trainings/blank.png' %}{% endif %}"
+            />
+          </p>
+          <p class="online-training-text-custom-trainer">Completed online w/ ALF Boss Trainings - {{facility.name}}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div id="right-signature" class="signatures-container">
+      <div class="signature employee">
+        <p>{{employee.first_name}} {{employee.last_name}}</p>
+        <p class="date">on {{completed_date|date:"m/d/Y" }}</p>
+      </div>
+    </div>
+    <div class="certificate-container">
+      <div class="text-wrap">
+        <div class="text-container">
+          <p class="user-name">{{employee.first_name}} {{employee.last_name}}</p>
+          <p class="training-name">{{task_name}}</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

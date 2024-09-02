@@ -1,0 +1,37 @@
+---
+title: Facility CloudCare
+---
+
+= Facility 
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+|`id` | `int` | Facility ID
+|`name` | `string` | Name of the Facility.
+
+
+|===
+
+++++
+<%= json :facility_cloudcare_response %>
+++++
+
+== List
+
+[source]
+----
+GET /cloudcare/facilities/
+----
+
+=== List Example
+
+----
+curl --location --request GET 'https://api.staging.alfboss.com/api/cloudcare/facilities/' \
+--header 'Authorization: Token _RSEsXLL7JWfHEXAdBgjnPKQPRlnbCdd2lUhKWfL'
+----
+
+
+// vim: set ft=asciidoc:

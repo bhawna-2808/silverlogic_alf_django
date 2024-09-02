@@ -1,0 +1,586 @@
+{% load static %}
+{% load thumbnail %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>{{ resident }} 1823</title>
+
+    <style>
+      @page {
+        size: letter portrait;
+        @frame content_frame {          /* Content Frame */
+          left: 30pt; width: 552pt; top: 10pt; height: 715pt;
+        }
+        @frame footer_frame {           /* Static Footer Frame */
+          -pdf-frame-content: footer_content;
+          left: 50pt; width: 512pt; top: 745pt; height: 60pt;
+        }
+      }
+      body {
+        font-size: 9pt;
+      }
+      h3 {
+        margin: 10px 0 0;
+        padding: 0;
+      }
+      small {
+        font-size: 8pt;
+      }
+      table {
+        padding: 2px;
+      }
+      th, td {
+        padding: 4px 4px 2px;
+        font-size: 8pt;
+        line-height: 8pt;
+        border: 1px solid #000;
+      }
+      th {
+        background-color: #e6e6e6;
+      }
+      .checkbox {
+        border: 1px solid #000;
+        width: 25px;
+        height: 25px;
+      }
+      .tablevalue {
+        font-weight: normal;
+        font-size: 8pt;
+      }
+
+      .footer {
+        font-size: 7pt;
+      }
+      .text-bold {
+        font-weight: bold;
+      }
+      .text-left {
+        text-align: left;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .border-l {
+        border: 4px solid #000;
+      }
+      .border-m {
+        border: 2px solid #000;
+      }
+      .border-s {
+        border: 1px solid #000;
+      }
+
+      .section-header {
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 7px 5px -3px;
+      }
+      .table-header th {
+        font-size: 8px;
+      }
+      .table-row td {
+        font-size: 8px;
+      }
+      .instruction {
+        padding: 5pt 25pt 0;
+        font-weight: bold;
+        background-color: #e6e6e6;
+        text-align: center;
+        border: 1px solid #000;
+        line-height: 13px;
+      }
+      .note {
+        padding: 5pt 3pt 0;
+        line-height: 13px;
+        background-color: #e6e6e6;
+      }
+      .key {
+        font-size: 9pt;
+        line-height: 10pt;
+        font-weight: bold;
+        border: 1px solid #000;
+        background-color: #e6e6e6;
+        padding: 2px 0 0 2px;
+      }
+      .title {
+        font-size: 10pt;
+        line-height: 11pt;
+        font-weight: bold;
+        padding: 1px 7px;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content for Static Frame 'footer_frame' -->
+    <table id="footer_content" class="footer">
+      <tr>
+        <td colspan="10" style="border: none; padding: 0">AHCA Form 1823, April 2021</td>
+        <td colspan="10" style="border: none; text-align: right; padding: 0">58A-5.0181(2)(b), F.A.C.</td>
+      </tr>
+      <tr>
+        <td colspan="3" style="border: none; padding: 0;">
+          Page <pdf:pagenumber>
+        </td>
+        <td colspan="17" style="border: none; text-align: right; padding: 0;">Created with ALF Boss</td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td width="20%" style="border: none">
+          <img class="logo" src="{% static "residents/ahca.jpg" %}" height="150px" />
+        </td>
+        <td width="60%" class="text-center" style="border: none">
+          <h1 style="font-size: 23px; line-height: 30px">
+            Resident Health Assessment for <br />
+            Assisted Living Facilities
+          </h1>
+        </td>
+        <td width="20%" style="border: none"></td>
+      </tr>
+    </table>
+    <hr />
+
+    <div class="resident-information">
+      <b>To Be Completed By Facility:</b>
+      <table>
+        <tr>
+          <th colspan="2">Resident Information</th>
+        </tr>
+        <tr>
+          <td width="70%">
+            Resident Name:
+            <span class="tablevalue">{{ resident.first_name|default:"&nbsp;" }} {{ resident.last_name|default:"&nbsp;" }}</span>
+          </td>
+          <td width="30%">DOB:
+            <span class="tablevalue">
+            {{ resident.date_of_birth|date:"SHORT_DATE_FORMAT"|default:"&nbsp;" }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            Authorized Representative <small>(if applicable)</small>:
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <pdf:spacer height="15px">
+
+    <table class="facility-information">
+      <tr>
+        <th colspan="12">Facility Information</th>
+      </tr>
+      <tr>
+        <td colspan="7">
+          Facility Name:
+          <span class="tablevalue">
+            {{resident.facility.name|default:"&nbsp;"}}
+          </span>
+        </td>
+        <td colspan="5">
+          Telephone Number: &nbsp;
+          <span class="tablevalue">
+            {{resident.facility.contact_phone|default:"&nbsp;"}}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7">Street: <span class="tablevalue">{{resident.facility.address_line1}} {{resident.facility.address_line2}}</span></td>
+        <td colspan="5">Fax Number: {{resident.facility.contact_fax|default:"&nbsp; ( &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )"}}</td>
+      </tr>
+      <tr>
+        <td colspan="6">City: <span class="tablevalue">{{resident.facility.address_city|default:"&nbsp;"}}</span></td>
+        <td colspan="4">County: <span class="tablevalue">{{resident.facility.address_county|default:"&nbsp;"}}</span></td>
+        <td colspan="2">Zip: <span class="tablevalue">{{resident.facility.address_zipcode|default:"&nbsp;"}}</span> </td>
+      </tr>
+      <tr>
+        <td colspan="12">
+          Contact Person:
+          <span class="tablevalue">
+            {{resident.facility.primary_administrator_name|default:"&nbsp;"}}
+          </span>
+        </td>
+      </tr>
+    </table>
+
+    <p class="instruction">
+      INSTRUCTIONS TO LICENSED HEALTH CARE PROVIDERS: <br />
+      After completion of all items in Sections 1 and 2 (pages 1 - 3), return this form to the facility at the address indicated above.
+    </p>
+
+    <h2 class="section-header">
+      SECTION 1. Health Assessment.
+    </h2>
+
+    <p class="note">
+      NOTE: This section must be completed by a licensed health care provider and must include a face-to-face examination.
+    </p>
+
+    <table class="text-bold">
+      <tr>
+        <td width="60%">
+          Known Allergies:
+          <pdf:spacer height="30px">
+        </td>
+        <td width="20%">
+          Height:
+          <pdf:spacer height="30px">
+        </td>
+        <td width="20%">
+          Weight:
+          <pdf:spacer height="30px">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          Medical History and Diagnoses:
+          <pdf:spacer height="30px">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          Physical or Sensory Limitations:
+          <pdf:spacer height="30px">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          Cognitive or Behavioral Status:
+          <pdf:spacer height="30px">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          Nursing/Treatment/Therapy Service Requirements:
+          <pdf:spacer height="30px">
+
+          <table>
+            <tr>
+              <td colspan="5" style="border: none">Dialysis Patient:</td>
+              <td colspan="5" style="border: none">Is under hospice care:</td>
+            </tr>
+            <tr>
+              <td width="40px" style="border: none; font-weight: normal;">Yes: </td>
+              <td width="25px"></td>
+              <td width="40px" style="border: none; font-weight: normal;">No: </td>
+              <td width="25px"></td>
+              <td width="200px" style="border: none"></td>
+              <td width="40px" style="border: none; font-weight: normal;">Yes: </td>
+              <td width="25px"></td>
+              <td width="40px" style="border: none; font-weight: normal;">No: </td>
+              <td width="25px"></td>
+              <td width="200px" style="border: none"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Special Precautions:
+          <pdf:spacer height="45px">
+        </td>
+        <td colspan="2">
+          Elopement Risk: <br />
+          <pdf:spacer height="10px">
+          <table>
+            <tr>
+              <td width="40px" style="border: none; font-weight: normal;">Yes: </td>
+              <td width="25px"></td>
+              <td width="40px" style="border: none; font-weight: normal;">No: </td>
+              <td width="25px"></td>
+            </tr>
+          </table>
+          <pdf:spacer height="10px">
+        </td>
+      </tr>
+    </table>
+
+    <pdf:nextpage>
+
+    <pdf:spacer height="20pt">
+
+    <div class="resident-information">
+      <b>To Be Completed By Facility:</b>
+      <table>
+        <tr>
+          <td width="70%">Resident Name: {{ resident.first_name|default:"&nbsp;" }} {{ resident.last_name|default:"&nbsp;" }}</td>
+          <td width="30%">DOB: {{ resident.date_of_birth|date:"SHORT_DATE_FORMAT"|default:"&nbsp;" }}</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            Authorized Representative <small>(if applicable)</small>:
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <h2 class="section-header">
+      SECTION 1. Health Assesment (continued)
+    </h2>
+
+    <p class="note">
+      NOTE: This section must be completed by a licensed health care provider and must include a face-to-face examination.
+    </p>
+
+    <h3>A. To what extent does the individual need supervision or assistance with the following?</h3>
+
+    <table class="key">
+      <tr>
+        <td>Key</td>
+        <td>
+            I = Independent<br />
+            <span style="font-weight:normal">Staff does not assist at all</span>
+        </td>
+        <td>
+            S = Needs Supervision<br />
+            <span style="font-weight:normal">Staff provide cueing or prompting, but resident completes the action</span>
+        </td>
+        <td>
+            A = Needs Assistance<br />
+            <span style="font-weight:normal">Staff provide physical assistance with the resident’s participation</span>
+        </td>
+        <td>
+            T = Total Care<br />
+            <span style="font-weight:normal">Staff completes the action for the resident</span>
+        </td>
+      </tr>
+    </table>
+
+    <p class="title">
+      Indicate by a checkmark (&#10004;) in the appropriate column below.
+    </p>
+
+    <table class="activities text-bold">
+      <tr>
+        <th colspan="30" style="text-align: left">ACTIVITIES OF DAILY LIVING</th>
+        <th colspan="4">I</th>
+        <th colspan="4">S</th>
+        <th colspan="4">A</th>
+        <th colspan="4">T</th>
+      </tr>
+      <tr>
+        <td colspan="30">Ambulation</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td colspan="30">Bathing</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td colspan="30">Dressing</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td colspan="30">Eating</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td colspan="30">Self Care (grooming)</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td colspan="30">Toileting</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td colspan="30">Transferring</td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+        <td colspan="4"></td>
+      </tr>
+    </table>
+
+    <h3>B. Special Diet Instructions:</h3>
+    <table class="text-bold" style="margin-top: 0">
+      <tr>
+        <td colspan="4" style="border: none; text-align: right; height: 15px; padding: 1px 5px -1px;">Regular</td>
+        <td colspan="2"></td>
+        <td colspan="9" style="border: none; text-align: right; height: 15px; padding: 1px 5px -1px;">Calorie Controlled</td>
+        <td colspan="2"></td>
+        <td colspan="9" style="border: none; text-align: right; height: 15px; padding: 1px 5px -1px;">No Added Salt</td>
+        <td colspan="2"></td>
+        <td colspan="14" style="border: none; text-align: right; height: 15px; padding: 1px 5px -1px;">Low Fat/Low Cholesterol</td>
+        <td colspan="2"></td>
+        <td colspan="8" style="border: none; text-align: right; height: 15px; padding: 1px 5px -1px;">Low Sugar</td>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td colspan="28" style="border: none; height: 25px; padding: 5px 7px -1px 0"><b>Other</b> (specify, including consistency changes such as puree):</td>
+        <td colspan="26" style="border: none; border-bottom: 1px solid #000"></td>
+      </tr>
+      <tr>
+        <td colspan="54" style="border: none; border-bottom: 1px solid #000"></td>
+      </tr>
+    </table>
+    <h3>C. Does the individual have any of the following conditions/requirements?</h3>
+
+    <table class="text-bold compact">
+      <tr>
+        <th colspan="85" style="text-align: left">STATUS</th>
+        <th colspan="25" style="font-size: 10px">Yes</th>
+        <th colspan="25">No</th>
+      </tr>
+      <tr>
+        <td colspan="85" style="padding: 2px; font-size: 11px; line-height: 11px">A communicable disease, which could be transmitted to other residents or staff?</td>
+        <td colspan="25">&nbsp;</td>
+        <td colspan="25">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="85" style="padding: 2px; font-size: 11px; line-height: 11px">Bedridden?</td>
+        <td colspan="25">&nbsp;</td>
+        <td colspan="25">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="85" style="padding: 2px; font-size: 11px; line-height: 11px">Any stage 2, 3, or 4 pressure sores?</td>
+        <td colspan="25">&nbsp;</td>
+        <td colspan="25">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="85" style="padding: 2px; font-size: 11px; line-height: 11px">Pose a danger to self or others? (Consider any significant history of physically or sexually aggressive behavior.)</td>
+        <td colspan="25">&nbsp;</td>
+        <td colspan="25">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="85" style="padding: 2px; font-size: 11px; line-height: 11px">Require 24-hour nursing or psychiatric care? </td>
+        <td colspan="25">&nbsp;</td>
+        <td colspan="25">&nbsp;</td>
+      </tr>
+    </table>
+    <h3>D. In your professional opinion, can this individual's needs be met in an assisted living facility, which is not a medical, nursing or psychiatric facility?
+    Yes <span style="text-decoration: underline">&nbsp;&nbsp;&nbsp;&nbsp;</span> No <span style="text-decoration: underline">&nbsp;&nbsp;&nbsp;&nbsp;</span></h3>
+    <pdf:nextpage>
+
+    <pdf:spacer height="40pt">
+
+    <div class="resident-information">
+      <b>To Be Completed By Facility:</b>
+      <table>
+        <tr>
+          <td width="70%">Resident Name: {{ resident.first_name|default:"&nbsp;" }} {{ resident.last_name|default:"&nbsp;" }}</td>
+          <td width="30%">DOB: {{ resident.date_of_birth|date:"SHORT_DATE_FORMAT"|default:"&nbsp;" }}</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            Authorized Representative <small>(if applicable)</small>:
+          </td>
+        </tr>
+      </table>
+    </div>
+    <h2 class="section-header">
+      SECTION 2. Self-Care and General Oversight Assessment - Medications
+    </h2>
+
+    <h3>A. Attach a listing of all currently pescribed medication, including dosage, directions for use, and route.</h3>
+
+    <pdf:spacer height="10px">
+
+    <div class="title" style="padding: 2px">
+      B. Does the individual need help with taking his or her medications (meds)?
+      Yes <span style="text-decoration: underline">&nbsp;&nbsp;&nbsp;&nbsp;</span> No <span style="text-decoration: underline">&nbsp;&nbsp;</span>.
+      If yes, please place a checkmark (&#10004;) in front of the appropriate box below:
+    </div>
+
+
+    <table>
+      <tr style="height: 15px">
+        <td colspan="5" style="border: none"></td>
+        <td colspan="2"></td>
+        <td colspan="43" style="border: none; padding: 1px 5px -1px; font-weight: bold">
+          Needs Assistance with Self-Administration
+        </td>
+        <td colspan="2"></td>
+        <td colspan="48" style="border: none; padding: 1px 5px -1px; font-weight: bold">
+          Needs Medication Administration
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7" style="border: none"></td>
+        <td colspan="43" style="border: none">
+          &#10070; This allows unlicensed staff to assist with orals and topical medication.
+        </td>
+        <td colspan="3" style="border: none"></td>
+        <td colspan="47" style="border: none">
+          &#10070; Not all assisted living facilities have licensed staff to perform this service
+        </td>
+      </tr>
+      <tr style="height: 15px">
+        <td colspan="5" style="border: none"></td>
+        <td colspan="2">
+        <td colspan="93" style="border: none; padding: 1px 5px -1px; font-weight: bold">
+          Able To Administer Without Assistance
+        </td>
+      </tr>
+    </table>
+
+    <h3>C. Additional Comments/Observations <span style="font-weight: normal">(use additional pages if necessary):</span></h3>
+    <div style="border-bottom: 1px solid #000; width: 100%"> &nbsp; </div>
+    <div style="border-bottom: 1px solid #000; width: 100%"> &nbsp; </div>
+    <div style="border-bottom: 1px solid #000; width: 100%"> &nbsp; </div>
+    <div style="border-bottom: 1px solid #000; width: 100%"> &nbsp; </div>
+    <div class="instruction">
+      NOTE: MEDICAL CERTIFICATION IS INCOMPLETE WITHOUT THE FOLLOWING INFORMATION
+    </div>
+
+    <table class="text-bold">
+      <tr>
+        <td colspan="12">
+          Name of Examiner <span style="font-weight: normal">(please print):</span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="12">Medical License #:</td>
+      </tr>
+      <tr>
+        <td colspan="12">Telephone Number:</td>
+      </tr>
+      <tr>
+        <td colspan="3" style="border-right: none">Title of Examiner <span>(check box)</span></td>
+        <td colspan="9" style="border-left: none">
+            <table style="height: 15px">
+              <tr>
+                <td colspan="1"></td>
+                <td colspan="6" style="border: none; padding: 1px 5px -1px;">MD</td>
+                <td colspan="1"></td>
+                <td colspan="6" style="border: none; padding: 1px 5px -1px;">DO</td>
+                <td colspan="1"></td>
+                <td colspan="6" style="border: none; padding: 1px 5px -1px;">ARNP</td>
+                <td colspan="1"></td>
+                <td colspan="6" style="border: none; padding: 1px 5px -1px;">PA</td>
+              </tr>
+            </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="12">Address of Examiner:</td>
+      </tr>
+      <tr>
+        <td colspan="7">Signature of Examiner:</td>
+        <td colspan="5">Date of Examination:</td>
+      </tr>
+    </table>
+  </body>
+</html>

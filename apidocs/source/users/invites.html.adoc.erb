@@ -1,0 +1,166 @@
+---
+title: User Invites
+---
+
+= User Invites
+
+Invite a user to be a part of your facility.
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`id` | `integer` |
+|`email` | `string` | email address of the person invited.
+|`phone_number` | `string` | phone number of the person invited.
+|`role` | `string` | Possible values: `manager`, `examiner`.
+|`status` | `string` | Possible values: `sent`, `accepted`.
+|`employee` | `integer` | Employee pk.
+|`can_see_residents` | `boolean` | User can see residents of the facility (only for managers).
+|`can_see_staff` | `boolean` | User can see staff of the facility (only for managers).
+|===
+
+=== Example
+
+++++
+<%= json :user_invite %>
+++++
+
+
+== Create
+
+Send or resend an invite to a person's email address.  The email will contain a link to
+`<front_url>/user-invite-accept/<id>/<token>` where the user can accept the invite and create
+their user.
+
+[source]
+----
+POST /user-invites/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`email` | `string` | **Required** The email of the person being invited.
+|`employee` | `string` | **Optional** The employee to link user account.
+|`role` | `string` | **Required** Possible values: `manager`, `examiner`.
+|`can_see_residents` | `string` | **Required** Boolean if user can see residents
+|`can_see_staff` | `string` | **Required** Boolean if user can see staff
+|===
+
+== Retrieve
+
+[source]
+----
+GET /user-invites/:id/
+----
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`token` | `string` | If the user retrieving the invite is unauthenticated this parameter is **Required**.
+This is the same token used to accept invites.
+|===
+
+== Delete
+
+Rescind an invite so that it may no longer be accepted.
+
+[source]
+----
+DELETE /user-invites/:id/
+----
+
+
+== List
+
+List all of the facilities invites.
+
+[source]
+----
+GET /user-invites/
+----
+
+
+=== Parameters
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`status` | `string` | only return invites with the specified status.
+|`role` | `string` | only return invites with the specified role(s).
+|`resident` | `integer` | only return invites for the specified resident id.
+|===
+
+== Link Employee to User
+
+Used to link an user without an employee
+
+[source]
+----
+POST /user-invites/employee-link/
+----
+
+=== Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`employee` | `integer` | **Required** ID of the employee.
+|`user` | `integer` | **Required** ID of the user.
+|===
+
+
+== Accept
+
+Accept an invite and create a user.  Each invite may only be accepted once.
+
+[source]
+----
+POST /user-invites/:id/accept/
+----
+
+=== Input
+
+The available and required inputs depends on the role of the invite.
+
+=== Manager Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`token` | `string` | **Required** Token received in the email / url.
+|`username` | `string` | **Required** The username of the new user.
+|`password` | `string` | **Required** The password of the new user.
+|`first_name` | `string` | **Required** The first name of the person accepting the invite.
+|`last_name` | `string` | **Required** The last name of the person accepting the invite.
+|===
+
+=== Examiner Input
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`token` | `string` | **Required** Token received in the email / url.
+|`username` | `string` | **Required** The username of the new user.
+|`password` | `string` | **Required** The password of the new user.
+|`first_name` | `string` | **Required** The first name of the person accepting the invite.
+|`last_name` | `string` | **Required** The last name of the person accepting the invite.
+|`medical_license_number` | `string` | **Required** The medical license number of the examiner accepting the invite.
+|===
+
+
+// vim: set ft=asciidoc:

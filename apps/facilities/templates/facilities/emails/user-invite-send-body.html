@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>You are invited to join {{ facility.name }}</title>
+</head>
+<body>
+<p>Hi,</p>
+
+<p>{{ invited_by.get_full_name }} has invited you to be a {{ role }} at their facility: {{ facility.name }}.</p>
+
+<p>To accept their invite and create your user please visit the following link in your browser:</p>
+
+<p>
+    <a href="{{ url }}">
+        {{ url }}
+    </a>
+</p>
+
+<p>
+    Thank you,
+    ALF Boss
+</p>
+</body>
+</html>

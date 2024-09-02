@@ -1,0 +1,7 @@
+{% autoescape off %}{{ subject }}
+The following {{ event_word }} {{ to_be }} happening in your facility soon:
+
+{% for training_event in training_events %}
+{{ training_event.training_for.name }} at {{ training_event.start_time|date:'F j, g:i a' }} at {{ training_event.location }}.
+{% endfor %}
+{% endautoescape %}

@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: postgres
+    image: silverlogic/postgres12.3
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 250m
+      limits:
+        memory: 2Gi
+        cpu: 1000m
+    env:
+    - name: POSTGRES_USER
+      value: postgres
+    - name: POSTGRES_PASSWORD
+      value: postgres
+    - name: POSTGRES_DB
+      value: ci
+    ports:
+      - containerPort: 5432
+    tty: true
+  - name: python3
+    image: silverlogic/python3.8
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 250m
+      limits:
+        memory: 3Gi
+        cpu: 1000m
+    command:
+    - cat
+    tty: true
+    env:
+    - name: SECRET_KEY
+      value: nosecret
+    - name: DATABASE_URL
+      value: postgis://postgres:postgres@localhost/ci
+    - name: CELERY_BROKER_URL
+      value: N/A
+    - name: URL
+      value: http://localhost
+    - name: FRONT_URL
+      value: http://app.localhost
+    - name: DJOSER_DOMAIN
+      value: example.com
+    - name: STRIPE_API_KEY
+      value: sk_test_HWpbbvI3KrHBqvyzCTJCEejG
+    - name: CUSTOM_TASK_TYPE_ADMIN_EMAIL
+      value: admin@example.com
+    - name: AUTH_TOKEN_DURATION_MINUTES
+      value: 100
+    - name: TWILIO_ACCOUNT_SID
+      value:
+    - name: TWILIO_AUTH_TOKEN
+      value:
+    - name: TWILIO_PHONE_NUMBER
+      value:
+    - name: SENDGRID_API_KEY
+      value:
+    - name: VIRTRU_HMAC_TOKEN
+      value:
+    - name: VIRTRU_SECRET
+      value:
+    - name: GOOGLE_API_KEY
+      value:

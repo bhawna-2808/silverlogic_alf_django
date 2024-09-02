@@ -1,0 +1,128 @@
+{% load thumbnail %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ employee }}</title>
+
+    <style>
+        @page {
+            size: letter portrait;
+            @frame content_frame {          /* Content Frame */
+                left: 30pt; width: 552pt; top: 20pt; height: 735pt;
+            }
+            @frame footer_frame {           /* Static Footer Frame */
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 552pt; top: 745pt; height: 40pt;
+            }
+        }
+
+        h1 {
+            font-size: 14pt;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        body {
+            font-size: 11pt;
+        }
+
+        th {
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            padding: 10pt;
+        }
+
+        img {
+            height: 90pt;
+        }
+
+        .footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content" class="footer">
+    <div class="pagenum">
+        <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+    Created with ALF Boss
+</div>
+
+<!-- HTML Content -->
+<h1>{{ employee }} Certificates</h1>
+
+<h2>Trainings Certificates</h2>
+{% if completed_trainings %}
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Completed</th>
+        <th>Uploaded</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for training in completed_trainings %}
+    <tr class="item">
+        <td>{{ training.type.name }}</td>
+        <td>{{ training.completion_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ training.certificate.uploaded_at|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>
+            {% if training.certificate.pages.first.isImage %}
+            <img class="certificate" src="{% thumbnail training.certificate.pages.first.page 200x200 %}"/>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<center>No completed trainings</center>
+{% endif %}
+
+<h2>Tasks Certificates</h2>
+{% if completed_tasks %}
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Completed</th>
+        <th>Uploaded</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in completed_tasks %}
+    <tr class="item">
+        <td>{{ task.type.name }}</td>
+        <td>{{ task.completion_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ task.certificate.uploaded_at|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>
+            {% if task.certificate.pages.first.isImage %}
+            <img class="certificate" src="{% thumbnail task.certificate.pages.first.page 200x200 %}"/>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<center>No completed tasks</center>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resident List</title>
+
+    <style>
+        @page {
+            size: letter landscape;
+            @frame header_frame {           /* Static Header Frame */
+                -pdf-frame-content: header_content;
+                left: 15pt; width: 750pt; top: 20pt; height: 30pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 15pt; width: 750pt; top: 50pt; height: 510pt;
+            }
+            @frame footer_frame {           /* Static Footer Frame */
+                -pdf-frame-content: footer_content;
+                left: 15pt; width: 750pt; top: 545pt; height: 40pt;
+            }
+        }
+        h1 {
+            font-size: 14pt;
+        }
+        body {
+            font-size: 11pt;
+        }
+        table {
+            table-layout: fixed;
+        }
+        thead {
+            display: table-header-group;
+        }
+        th {
+            font-size: 8pt;
+            font-weight: bold;
+            padding-right: 1px;
+            padding-bottom: 10px;
+            width: 100px;
+            vertical-align: top;
+        }
+        td {
+            width: 100px;
+            vertical-align: top;
+        }
+        .footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'header_frame' -->
+<div id="header_content" class="header">
+    <table width="100%">
+        <tr>
+            <td class="facility-info"><h1>Admission/Discharge List</h1></td>
+        </tr>
+    </table>
+</div>
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content" class="footer">
+    <div class="pagenum">
+        <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+    Created with ALF Boss
+</div>
+
+<!-- HTML Content -->
+<table repeat="1">
+    <thead>
+        <tr>
+            <th style="text-align: left">First Name</th>
+            <th style="text-align: left">Last Name</th>
+            <th style="text-align: left">Date Admitted</th>
+            <th style="text-align: left">Date of Birth</th>
+            <th style="text-align: left">SSN</th>
+            <th style="text-align: left">Place admitted from</th>
+            <th style="text-align: left">Special notes</th>
+            <th style="text-align: left">Date of discharge</th>
+            <th style="text-align: left">Discharge reason</th>
+            <th style="text-align: left">Discharge notes</th>
+            <th style="text-align: left">Place discharged to</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for resident in residents %}
+        <tr>
+            <td style="vertical-align:top">{{ resident.first_name }}</td>
+            <td style="vertical-align:top">{{ resident.last_name }}</td>
+            <td style="vertical-align:top">{{ resident.date_of_admission|date:"SHORT_DATE_FORMAT" }}</td>
+            <td style="vertical-align:top">{{ resident.date_of_birth|date:"SHORT_DATE_FORMAT" }}</td>
+            <td style="vertical-align:top">{{ resident.ssn }}</td>
+            <td style="vertical-align:top">{{ resident.admitted_from }}</td>
+            <td style="vertical-align:top">{{ resident.personal_notes }}</td>
+            <td style="vertical-align:top">{{ resident.date_of_discharge|date:"SHORT_DATE_FORMAT" }}</td>
+            <td style="vertical-align:top">{{ resident.discharge_reason }}</td>
+            <td style="vertical-align:top">{{ resident.discharge_notes }}</td>
+            <td style="vertical-align:top">{{ resident.discharged_to }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

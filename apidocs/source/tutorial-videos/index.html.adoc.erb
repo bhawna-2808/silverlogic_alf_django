@@ -1,0 +1,33 @@
+---
+title: Tutorial Videos
+---
+
+= Tutorial Videos
+
+
+== Object
+
+[cols="2,1,5"]
+|===
+|Name |Type |Description
+
+|`title` | `string` | The title of the tutorial video.
+|`url` | `string` | The Youtube or Wistia URL of the tutorial video.
+|`description` | `string` | The description of the tutorial video.
+|===
+
+=== Example
+
+++++
+<%= json :tutorial_video %>
+++++
+
+== List
+
+[source]
+----
+GET /tutorial-videos/
+----
+
+
+// vim: set ft=asciidoc:

@@ -1,0 +1,16 @@
+{% extends 'admin/index.html' %}
+
+{% block content %}
+<div class="module">
+    <table>
+        <caption class="section">Dashboard</caption>
+        <tr>
+            <th>
+                <a href="{% url 'dashboard' %}">Recent Activities</a>
+            </th>
+            <td/>
+        </tr>
+    </table>
+</div>
+{{block.super}}
+{% endblock %}

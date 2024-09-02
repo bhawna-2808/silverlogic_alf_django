@@ -1,0 +1,130 @@
+{% load static %}
+
+<html>
+  <head>
+    <style>
+      @page {
+        size: letter portrait;
+        @frame content_frame {
+          width: 791px;
+          height: 612px;
+          margin-top: 90px;
+          left: 15px;
+        }
+        @frame background_content {
+          -pdf-frame-content: background-content;
+          width: 791px;
+          height: 612px;
+          left: 15px;
+        }
+        @frame footer_left {
+          -pdf-frame-content: footer-left;
+          width: 310px;
+          left: 100px;
+          top: 380px;
+        }
+        @frame footer_left_info {
+          -pdf-frame-content: footer-left-info;
+          width: 310px;
+          left: 150px;
+          top: 350px;
+        }
+        @frame footer_right {
+          -pdf-frame-content: footer-right;
+          width: 310px;
+          left: 410px;
+          top: 380px;
+        }
+        @frame footer_right_info {
+          -pdf-frame-content: footer-right-info;
+          width: 310px;
+          left: 460px;
+          top: 350px;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 791px;
+        font-family: 'Times New Roman', Times, serif
+      }
+      .certificate-container {
+        position: relative;
+      }
+      .base-certificate {
+        width: 791px;
+      }
+      .text-wrap {
+        width: 791px;
+        padding: 0 118px;
+      }
+      .text-container {
+        position: relative;
+        width: 791px;
+      }
+      .agenda-text {
+        padding-top: 24px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 36px;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .agenda-training-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 0;
+        padding-top: 0;
+      }
+      .agenda {
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      #footer-right {
+        padding-left: 90px;
+        padding-right: 40px;
+      }
+      #footer-left {
+        padding-left: 90px;
+        padding-right: 40px;
+      }
+      .signature {
+        width: 310px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="background-content">
+      <img class="base-certificate" src="{% static 'trainings/certificate-back.png' %}" />
+    </div>
+    <div id="footer-left">
+        {% if admin_signature %}<img class="signature" src="{{admin_signature}}" />{% endif %}
+    </div>
+    <div id="footer-left-info">
+      <div class="signature-info-container">
+        {{facility.name}} Administrator:
+      </div>
+    </div>
+    <div id="footer-right">
+      <img class="signature" src="{{signature}}" />
+    </div>
+    <div id="footer-right-info">
+      <div class="signature-info-container">
+        {{employee.first_name}} {{employee.last_name}}:
+      </div>
+    </div>
+    <div class="certificate-container">
+      <div class="text-wrap">
+        <div class="text-container">
+          <p class="agenda-text">{{task_name}} {{completed_date|date:"m/d/Y" }}</p>
+          <p class="agenda">
+            I {{employee.first_name}} {{employee.last_name}} confirm that in accordance with this Online Training, my 
+            facility has discussed the license type, resident rights and personalized policies of our facility.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

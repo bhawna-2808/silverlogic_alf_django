@@ -1,0 +1,4 @@
+{% autoescape off %}
+Hello {{full_name}}, you have been invited to join ALFBoss. Click link to continue {{deep_link}}.
+Code: {{code}}
+{% endautoescape %}
