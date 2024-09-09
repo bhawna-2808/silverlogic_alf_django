@@ -1,0 +1,47 @@
+<!DOCTYPE html >
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities."/>
+    <meta name="keywords" content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app"/>
+    <meta name="author" content="pixelstrap"/>
+    <title>Silver Logic </title>
+    <!-- Favicon icon-->
+    {% include "backend_ui/includes/css.html" %} 
+  </head>
+  <body>
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top"><i class="iconly-Arrow-Up icli"></i></div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+      <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="page-wrapper compact-wrapper" id="pageWrapper"> 
+     {% include "backend_ui/base/header.html" %}
+      <!-- Page Body Start-->
+      <div class="page-body-wrapper"> 
+        <!-- Page sidebar start-->
+        {% include "backend_ui/base/sidebar.html" %}
+        <!-- Page sidebar end-->
+
+        {% comment %} dashboard {% endcomment %}
+        <div class="page-body">
+          {% block content %}
+    
+            {% endblock %}
+          
+          <!-- Container-fluid starts-->
+        
+        </div>
+        {% include "backend_ui/base/footer.html" %}
+      </div>
+    </div>
+    <!-- jquery-->
+  {% include "backend_ui/includes/scripts.html" %}
+   
+  </body>
+</html>
