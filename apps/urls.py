@@ -3,6 +3,7 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.urls import re_path
+
 from actstream.models import Action, Follow
 from apps.activities.admin import DashboardAdmin
 from apps.activities.models import Activity
