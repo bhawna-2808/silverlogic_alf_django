@@ -3,16 +3,21 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.urls import re_path
-
 from actstream.models import Action, Follow
-
 from apps.activities.admin import DashboardAdmin
 from apps.activities.models import Activity
 
 admin.autodiscover()
-admin.site.unregister(Group)
-admin.site.unregister(Action)
-admin.site.unregister(Follow)
+
+# Unregister models only if they are registered
+if Group in admin.site._registry:
+    admin.site.unregister(Group)
+
+if Action in admin.site._registry:
+    admin.site.unregister(Action)
+
+if Follow in admin.site._registry:
+    admin.site.unregister(Follow)
 
 urlpatterns = [
     re_path(
@@ -24,11 +29,11 @@ urlpatterns = [
     re_path(r"^api/", include("apps.api.urls")),
     # Stripe
     re_path(r"^stripe/", include("djstripeevents.urls")),
+    re_path(r"^backend/", include("backend_admin.urls")),
 ]
 
 if settings.DEBUG:
     from urllib.parse import urlparse
-
     from django.conf.urls.static import static
 
     media_url = urlparse(settings.MEDIA_URL)

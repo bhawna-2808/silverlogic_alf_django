@@ -1,44 +1,51 @@
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth.models import User  # Import the User model correctly
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 
-def login(request):
+
+def login(request):  # Rename the view to avoid conflict with login function
     try:
         if request.user.is_authenticated:
             return redirect("dashboard")
+
         if request.method == "POST":
-            email = request.POST["email"]
-            password = request.POST["password"]
+            username_or_email = request.POST.get("username_or_email")
+            # email = request.POST.get("email")
+            password = request.POST.get("password")
 
             # Fetch user by email
             try:
-                user = user.objects.get(email=email)
-                email = user.email
-            except user.DoesNotExist:
-                messages.error(request, "Invalid email or password!")
-                return redirect("index")
+                user = User.objects.get(Q(username=username_or_email) | Q(email=username_or_email))
 
-            user = authenticate(request, email=email, password=password)
-            print(user)
+                # user = User.objects.get(email=email)  # Correct model reference
+            except User.DoesNotExist:
+                messages.error(request, "Invalid email or password!")
+                return redirect("login")
+
+            # Authenticate using the user's username
+            user = authenticate(request, username=user.username, password=password)
             if user is not None:
-                login(request, user)
-                # messages.success(request, "Welcome to the Dashboard!")
+                auth_login(request, user)  # Use auth_login to avoid conflicts
                 return redirect("dashboard")
             else:
                 messages.error(request, "Invalid email or password!")
-                return redirect("index")
+                return redirect("login")
+
         return render(request, "backend_ui/login.html")
+    
     except Exception as ex:
-        print("Error in: login_page method", ex)
-        messages.error(request, "An error occurred. Please try again.")
-    return render(request, "backend_ui/login.html")
+        print("Error in login_view:", ex)
+        # messages.error(request, "An error occurred. Please try again.")
+        return redirect("login")
 
 
-
-
+@login_required
 def dashboard(request):
     return render(request, "backend_ui/dashboard.html")
+
 
 @login_required
 def user_logout(request):
