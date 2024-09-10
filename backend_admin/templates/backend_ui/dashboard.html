@@ -7,6 +7,7 @@
               <div class="row">
                 <div class="col-sm-6 col-12"> 
                   <h2>Default Dashboard</h2>
+                  {{request.user.username}}
                   <p class="mb-0 text-title-gray">Welcome back! Let’s start from where you left.</p>
                 </div>
                 <div class="col-sm-6 col-12">
@@ -177,7 +178,7 @@
                   </div>
                   <div class="card-body transaction-history pt-0">
                     <div class="table-responsive theme-scrollbar">
-                      <table class="table display table-bordernone" id="transaction" style="width:100%">
+                      <table class="table display table-bordernone" id="transactions" style="width:100%">
                         <thead>
                           <tr> 
                             <th>Item Name</th>
@@ -748,186 +749,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xxl-6 col-xl-7 proorder-xxl-5 col-md-6 box-col-6">
-                <div class="card height-equal">
-                  <div class="card-header card-no-border pb-0">
-                    <h3>Manage Invoice</h3>
-                  </div>
-                  <div class="card-body pt-0 manage-invoice filled-checkbox">
-                    <div class="table-responsive theme-scrollbar">
-                      <table class="table display table-bordernone mt-0" id="manage-invoice" style="width:100%">
-                        <thead>
-                          <tr> 
-                            <th>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid" type="checkbox"/>
-                                <label class="form-check-label" for="solid"> </label>
-                              </div>
-                            </th>
-                            <th>Client</th>
-                            <th>Date</th>
-                            <th>Payment</th>
-                            <th>Id No</th>
-                            <th>Amount</th>
-                            <th class="text-center">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid1" type="checkbox"/>
-                                <label class="form-check-label" for="solid1"> </label>
-                              </div>
-                            </td>
-                            <td><a href="list-products.html"> 
-                                <h6 class="f-w-600">Comelune</h6></a></td>
-                            <td> 
-                              <p class="f-w-600">27 Nov</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">Private</h6>
-                            </td>
-                            <td> 
-                              <p class="f-w-600">9605</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">$2,500</h6>
-                            </td>
-                            <td class="text-end"> 
-                              <div class="btn bg-light-success border-light-success text-success">Completed  </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid2" type="checkbox" checked=""/>
-                                <label class="form-check-label" for="solid2"> </label>
-                              </div>
-                            </td>
-                            <td><a href="list-products.html"> 
-                                <h6 class="f-w-600">Diagnos</h6></a></td>
-                            <td> 
-                              <p class="f-w-600">30 Nov</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">Bill Payment</h6>
-                            </td>
-                            <td> 
-                              <p class="f-w-600">9548</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">$4,560</h6>
-                            </td>
-                            <td class="text-end"> 
-                              <div class="btn bg-light-success border-light-success text-success">Completed</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid3" type="checkbox"/>
-                                <label class="form-check-label" for="solid3"> </label>
-                              </div>
-                            </td>
-                            <td><a href="list-products.html"> 
-                                <h6 class="f-w-600">Saturan</h6></a></td>
-                            <td> 
-                              <p class="f-w-600">27 Jun</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">Bill Payment</h6>
-                            </td>
-                            <td> 
-                              <p class="f-w-600">2950</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">$4,876</h6>
-                            </td>
-                            <td class="text-end"> 
-                              <div class="btn bg-light-warning border-light-warning text-warning">Pending</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid4" type="checkbox" checked=""/>
-                                <label class="form-check-label" for="solid4"> </label>
-                              </div>
-                            </td>
-                            <td><a href="list-products.html"> 
-                                <h6 class="f-w-600">Williams</h6></a></td>
-                            <td> 
-                              <p class="f-w-600">16 Dec</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">Private</h6>
-                            </td>
-                            <td> 
-                              <p class="f-w-600">1552</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">$3,876</h6>
-                            </td>
-                            <td class="text-end">
-                              <div class="btn bg-light-danger border-light-danger text-danger">Canceled</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid5" type="checkbox" checked=""/>
-                                <label class="form-check-label" for="solid5"> </label>
-                              </div>
-                            </td>
-                            <td><a href="list-products.html"> 
-                                <h6 class="f-w-600">Davies</h6></a></td>
-                            <td> 
-                              <p class="f-w-600">10 Nov</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">Bill Payment</h6>
-                            </td>
-                            <td> 
-                              <p class="f-w-600">9567</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">$2,986</h6>
-                            </td>
-                            <td class="text-end"> 
-                              <div class="btn bg-light-success border-light-success text-success">Completed</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check checkbox checkbox-solid-primary">
-                                <input class="form-check-input" id="solid6" type="checkbox"/>
-                                <label class="form-check-label" for="solid6"> </label>
-                              </div>
-                            </td>
-                            <td><a href="list-products.html"> 
-                                <h6 class="f-w-600">Smith</h6></a></td>
-                            <td> 
-                              <p class="f-w-600">30 Nov</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">Private</h6>
-                            </td>
-                            <td> 
-                              <p class="f-w-600">8992</p>
-                            </td>
-                            <td>
-                              <h6 class="f-w-600">$6,789</h6>
-                            </td>
-                            <td class="text-end"> 
-                              <div class="btn bg-light-success border-light-success text-success">Completed</div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
+             
               </div>
             </div>
           </div>
