@@ -67,6 +67,8 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         }
 
         data = {'query': query, 'variables': variables}
+        # print(data)
+        print(json.dumps(data, indent=2))
 
         try:
             response = requests.post(url=api_url, json=data, headers=headers)
