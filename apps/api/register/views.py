@@ -48,8 +48,8 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         query = """
         mutation ($itemName: String!, $columnVals: JSON!) {
             create_item (
-                board_id: your_board_id_here,
-                group_id: "your_group_id_here",
+                board_id: 3816422531,
+                group_id: "topics",
                 item_name: $itemName,
                 column_values: $columnVals
             ) {
@@ -87,6 +87,7 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             logger.error(f"Failed to send data to Monday.com: {str(e)}")
             if hasattr(e, 'response') and e.response is not None:
                 logger.error(f"Response content: {e.response.content}")
+                
     def send_welcome_email(self, user):
         subject = "Welcome to ALFBoss!"
         body = render_to_string(
