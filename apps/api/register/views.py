@@ -46,15 +46,15 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         }
 
         query = """
-        mutation ($myItemName: String!, $columnVals: JSON!) {
-          create_item (
-            board_id: 3816422531, 
-            group_id: "topics", 
-            item_name: $myItemName, 
-            column_values: $columnVals
-          ) {
+        mutation {
+        create_item (
+            board_id: 3816422531,
+            group_id: "topics",
+            item_name: "New Item", # This is the item name; replace it with your desired item name.
+            column_values: "{\"name\": \"John Doe\"}" # Replace "John Doe" and "john.doe@example.com" with the desired name and email.
+        ) {
             id
-          }
+        }
         }
         """
 
