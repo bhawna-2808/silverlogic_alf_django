@@ -36,7 +36,7 @@ def switch_user(modeladmin, request, queryset):
         session.save()
         
         # Construct the URL with the session key
-        redirect_url = f"https://staging.alfcoretrainingflorida.com/#/signin?session_key={session.session_key}"
+        redirect_url = f"https://staging.alfcoretrainingflorida.com/#/facility?session_key={session.session_key}"
         
         messages.success(request, f"Switched to user: {user.username}")
         return HttpResponseRedirect(redirect_url)
