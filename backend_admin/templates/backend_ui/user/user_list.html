@@ -18,14 +18,14 @@
         </div>
     </div>
 </div>
+
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="row">
-        <!-- Zero Configuration  Starts-->
+        <!-- Zero Configuration Starts -->
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header pb-0 card-no-border">
-                    {% comment %} <h3>Zero Configuration</h3><span>DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function:<code>$().DataTable();</code>.</span><span>Searching, ordering and paging goodness will be immediately added to the table, as shown in this example.</span> {% endcomment %}
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -37,8 +37,7 @@
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Email Address</th>
-                                    <th>Facility</th>
-                                    {% comment %} <th>Action</th> {% endcomment %}
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,6 +48,61 @@
                                     <td>{{ user.first_name }}</td>
                                     <td>{{ user.last_name }}</td>
                                     <td>{{ user.email }}</td>
+                                    <td> 
+                                        <ul class="action"> 
+                                            <li class="view">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#viewfacilityModal-{{ user.id }}">
+                                                    <i class="fa-regular fa-eye"></i>
+                                                </a>
+                                            </li>
+                                            <li class="edit"> 
+                                                <a href="{% url 'edit_user' user.id %}"><i class="icon-pencil-alt"></i></a>
+                                            </li>
+                                            <li class="delete">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal-{{ user.id }}">
+                                                    <i class="icon-trash"></i>
+                                                </a>
+                                            </li>
+                                            <li class="switch">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#dd-{{ user.id }}">
+                                                    <i class="fa-regular fa-circle-user"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td> 
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Zero Configuration Ends -->
+    </div>
+</div>
+
+<!-- Facility User Modals -->
+{% for user in users %}
+<div class="modal fade modal-bookmark" id="viewfacilityModal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Facility User Details</h3>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Facility</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
                                     <td>
                                         {% with facility_user=facility_users|dictsort:"user" %}
                                             {% for facility_user in facility_users %}
@@ -60,22 +114,49 @@
                                             {% endfor %}
                                         {% endwith %}
                                     </td>
-                                    {% comment %} <td> 
-                                        <ul class="action"> 
-                                            <li class="edit"> <a href="#"><i class="icon-pencil-alt"></i></a></li>
-                                            <li class="delete"><a href="#"><i class="icon-trash"></i></a></li>
-                                        </ul>
-                                    </td> {% endcomment %}
+                                    <td>
+                                      {% with facility_user=facility_users|dictsort:"user" %}
+                                            {% for facility_user in facility_users %}
+                                                {% if facility_user.user == user %}
+                                                    {{ facility_user.role }}
+                                                {% endif %}
+                                            {% empty %}
+                                                N/A
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </td>
                                 </tr>
-                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Zero Configuration  Ends-->
     </div>
 </div>
-<!-- Container-fluid Ends-->
+
+<!-- Delete User Confirmation Modal -->
+<div class="modal fade" id="deleteUserModal-{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel-{{ user.id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel-{{ user.id }}">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the user "{{ user.username }}"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{% url 'delete_user' user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Container-fluid Ends -->
 {% endblock %}
