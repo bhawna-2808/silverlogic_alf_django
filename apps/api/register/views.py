@@ -30,16 +30,18 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         self.send_welcome_email(user_facility["user"])
         self.subscribe_to_aweber(user_facility["user"], user_facility["facility"])
         self.create_employee(user_facility["user"], user_facility["facility"])
+        self.send_to_monday(user_facility["user"], user_facility["facility"])
+
         action.send(
             user_facility["user"],
             verb="created facility",
             action_object=user_facility["facility"],
         )
     def send_to_monday(self, user, facility):
-        api_key = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjMzNjMyNDI0MiwiYWFpIjoxMSwidWlkIjoxMTExNTk0OSwiaWFkIjoiMjAyNC0wMy0yMVQyMDozMDoyNS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NTAxODY4MCwicmduIjoidXNlMSJ9.0zLMH1Qt_xzxBh845x7HakVo7kblwzob3BvPsl--1DA"
+        api_Key = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjMzNjMyNDI0MiwiYWFpIjoxMSwidWlkIjoxMTExNTk0OSwiaWFkIjoiMjAyNC0wMy0yMVQyMDozMDoyNS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NTAxODY4MCwicmduIjoidXNlMSJ9.0zLMH1Qt_xzxBh845x7HakVo7kblwzob3BvPsl--1DA"
         api_url = "https://api.monday.com/v2"
         headers = {
-            "Authorization": api_key,
+            "Authorization": api_Key,
             "Content-Type": "application/json",
         }
 
@@ -59,10 +61,11 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         vars = {
             "myItemName": f"{user.first_name} {user.last_name}",
             "columnVals": json.dumps({
+                "name":user.username,
                 "email": {"text": user.email},
                 "status": {"label": "New"},
-                "date4": {"date": timezone.now().strftime("%Y-%m-%d")},
-                "text": {"text": facility.name}
+                # "date": {"date": timezone.now().strftime("%Y-%m-%d")},
+                "text": {"text": user.first_name}
             })
         }
 
