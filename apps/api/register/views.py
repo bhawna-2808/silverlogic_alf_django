@@ -39,52 +39,54 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     def send_to_monday(self, user, facility):
         api_key = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjMzNjMyNDI0MiwiYWFpIjoxMSwidWlkIjoxMTExNTk0OSwiaWFkIjoiMjAyNC0wMy0yMVQyMDozMDoyNS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NTAxODY4MCwicmduIjoidXNlMSJ9.0zLMH1Qt_xzxBh845x7HakVo7kblwzob3BvPsl--1DA"
         api_url = "https://api.monday.com/v2"
+       
         headers = {
-            "Authorization": api_key,
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         }
 
         query = """
         mutation ($itemName: String!, $columnVals: JSON!) {
             create_item (
-                board_id: 3816422531,
-                group_id: "topics",
+                board_id: your_board_id_here,
+                group_id: "your_group_id_here",
                 item_name: $itemName,
                 column_values: $columnVals
             ) {
                 id
             }
         }
-        """
+    """
 
         variables = {
             "itemName": f"{user.first_name} {user.last_name}",
             "columnVals": json.dumps({
-                "name": user.first_name,
-                "email": user.email,
+                "text": user.first_name,  # Adjust column names as per your Monday.com board
+                "email": {"email": user.email},
                 "status": {"label": "New Trial"}
             })
         }
 
         data = {'query': query, 'variables': variables}
-        # print(data)
-        print(json.dumps(data, indent=2))
+        
+        logger.info(f"Sending data to Monday.com: {json.dumps(data, indent=2)}")
 
         try:
             response = requests.post(url=api_url, json=data, headers=headers)
             response.raise_for_status()
             result = response.json()
             
-            if 'errors' in result:
-                logger.error(f"Monday.com API returned errors: {result['errors']}")
-            elif 'data' in result and 'create_item' in result['data']:
+            logger.info(f"Full response from Monday.com API: {json.dumps(result, indent=2)}")
+            
+            if 'data' in result and result['data']['create_item']:
                 logger.info(f"Successfully created item in Monday.com with ID: {result['data']['create_item']['id']}")
             else:
-                logger.warning(f"Unexpected response from Monday.com API: {result}")
+                logger.warning(f"Failed to create item in Monday.com. Response: {json.dumps(result, indent=2)}")
             
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to send data to Monday.com: {str(e)}")
-
+            if hasattr(e, 'response') and e.response is not None:
+                logger.error(f"Response content: {e.response.content}")
     def send_welcome_email(self, user):
         subject = "Welcome to ALFBoss!"
         body = render_to_string(
