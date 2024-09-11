@@ -61,9 +61,10 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         variables = {
             "itemName": f"{user.first_name} {user.last_name}",
             "columnVals": json.dumps({
-                "text": user.first_name,  # Adjust column names as per your Monday.com board
-                 "email": "abc@gmail.com",
+                "text": user.first_name,
+                "email":{'email': user.email, 'text': user.email },
                 #  "status": "New Trial",
+            
                 "date":timezone.now().strftime("%Y-%m-%d")
             })
         }
