@@ -1,5 +1,4 @@
 import logging
-
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import transaction
@@ -19,7 +18,6 @@ from .serializers import EmployeeRegisterSerializer, RegisterSerializer
 
 logger = logging.getLogger(__name__)
 
-
 class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = RegisterSerializer
     queryset = []
@@ -37,47 +35,54 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             verb="created facility",
             action_object=user_facility["facility"],
         )
+
     def send_to_monday(self, user, facility):
-        api_Key = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjMzNjMyNDI0MiwiYWFpIjoxMSwidWlkIjoxMTExNTk0OSwiaWFkIjoiMjAyNC0wMy0yMVQyMDozMDoyNS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NTAxODY4MCwicmduIjoidXNlMSJ9.0zLMH1Qt_xzxBh845x7HakVo7kblwzob3BvPsl--1DA"
+        api_key = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjMzNjMyNDI0MiwiYWFpIjoxMSwidWlkIjoxMTExNTk0OSwiaWFkIjoiMjAyNC0wMy0yMVQyMDozMDoyNS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NTAxODY4MCwicmduIjoidXNlMSJ9.0zLMH1Qt_xzxBh845x7HakVo7kblwzob3BvPsl--1DA"
         api_url = "https://api.monday.com/v2"
         headers = {
-            "Authorization": api_Key,
+            "Authorization": api_key,
             "Content-Type": "application/json",
         }
 
         query = """
-        mutation {
-        create_item (
-            board_id: 3816422531,
-            group_id: "topics",
-            item_name: "silver__logic",
-            column_values: "{\"name\": \"acc dd\"}"
-        ) {
-            i
-        }
+        mutation ($itemName: String!, $columnVals: JSON!) {
+            create_item (
+                board_id: 3816422531,
+                group_id: "topics",
+                item_name: $itemName,
+                column_values: $columnVals
+            ) {
+                id
+            }
         }
         """
 
-        vars = {
-            "myItemName": f"{user.first_name} {user.last_name}",
+        variables = {
+            "itemName": f"{user.first_name} {user.last_name}",
             "columnVals": json.dumps({
                 "name": user.first_name,
-                "email": {"text": user.email},
-                "status": "New Trail",
-                # "date": {"date": timezone.now().strftime("%Y-%m-%d")},
-                # "text": {"text": user.first_name}
+                "email": user.email,
+                "status": {"label": "New Trial"}
             })
         }
 
-        data = {'query': query, 'variables': vars}
+        data = {'query': query, 'variables': variables}
 
         try:
-            r = requests.post(url=api_url, json=data, headers=headers)
-            r.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xx
+            response = requests.post(url=api_url, json=data, headers=headers)
+            response.raise_for_status()
+            result = response.json()
+            
+            if 'errors' in result:
+                logger.error(f"Monday.com API returned errors: {result['errors']}")
+            elif 'data' in result and 'create_item' in result['data']:
+                logger.info(f"Successfully created item in Monday.com with ID: {result['data']['create_item']['id']}")
+            else:
+                logger.warning(f"Unexpected response from Monday.com API: {result}")
+            
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to send data to Monday.com: {str(e)}")
-            
-            
+
     def send_welcome_email(self, user):
         subject = "Welcome to ALFBoss!"
         body = render_to_string(
