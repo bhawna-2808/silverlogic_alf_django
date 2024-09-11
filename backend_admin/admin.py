@@ -1,19 +1,28 @@
-from django.http import JsonResponse
+from django.http import HttpResponse
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth import get_user_model
 from timed_auth_token.models import TimedAuthToken
-from django.contrib import admin
+import json
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
+from django.contrib import admin
+
 
 User = get_user_model()
 
+class HttpResponseRedirectWithData(HttpResponse):
+    def __init__(self, redirect_to, data, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self['Location'] = redirect_to
+        self['X-Custom-Data'] = json.dumps(data)
+        self.status_code = 302
+
 def switch_user(modeladmin, request, queryset):
     if queryset.count() != 1:
-        return JsonResponse({"error": "Please select exactly one user to switch."}, status=400)
+        return HttpResponse("Please select exactly one user to switch.", status=400)
     
     user = queryset.first()
     if not user.is_active:
-        return JsonResponse({"error": "Cannot switch to an inactive user."}, status=400)
+        return HttpResponse("Cannot switch to an inactive user.", status=400)
 
     # Generate or retrieve the token
     token, _ = TimedAuthToken.objects.get_or_create(user=user)
@@ -45,8 +54,8 @@ def switch_user(modeladmin, request, queryset):
         "auth_token": token.key
     }
 
-    # Return JSON response with the redirect URL and additional data
-    return JsonResponse({"redirect_url": redirect_url, "data": additional_data})
+    # Return custom response
+    return HttpResponseRedirectWithData(redirect_url, additional_data)
 
 switch_user.short_description = "Switch to selected user"
 
