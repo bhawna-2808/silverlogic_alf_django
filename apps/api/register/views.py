@@ -50,10 +50,10 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         create_item (
             board_id: 3816422531,
             group_id: "topics",
-            item_name: "New Item", # This is the item name; replace it with your desired item name.
-            column_values: "{\"name\": \"John Doe\"}" # Replace "John Doe" and "john.doe@example.com" with the desired name and email.
+            item_name: "silver__logic",
+            column_values: "{\"name\": \"acc dd\"}"
         ) {
-            id
+            i
         }
         }
         """
