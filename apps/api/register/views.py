@@ -59,11 +59,11 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
 
         variables = {
-            "itemName": f"{user.first_name} {user.last_name}",
+            "itemName": f"{facility.name}",
             "columnVals": json.dumps({
                 "text": user.first_name,
                 "email":{'email': user.email, 'text': user.email },
-                "status": "Working on it",
+                # "status": "Working on it",
             
                 "date":timezone.now().strftime("%Y-%m-%d")
             })
