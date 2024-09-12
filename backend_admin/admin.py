@@ -53,6 +53,7 @@ def switch_user(modeladmin, request, queryset):
             # return HttpResponseRedirect(redirect_url)
         else:
             messages.error(request, "Login failed. Please try again.")
+            
             return HttpResponseRedirect(reverse('admin:auth_user_changelist'))
     
     else:
